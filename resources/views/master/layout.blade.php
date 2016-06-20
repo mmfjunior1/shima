@@ -271,7 +271,7 @@ use App\Search;
 					<h3><i class="fa fa-home"></i>Oportunidades para venda</h3>
 						<div id="latest-work-footer" class="row">
 				        	<?php 
-							$casasCompra	= Search::select('*')->where('operacao','=',1)->take(5)->get();
+							$casasCompra	= Search::select('*')->where([['operacao',1],['status',1]])->take(5)->get();
 							
 							foreach($casasCompra as $value)
 							{
@@ -295,7 +295,7 @@ use App\Search;
 					<h3><i class="fa fa-home"></i>Oportunidades para aluguel</h3>
 						<div id="latest-work-footer" class="row">
 				        	<?php 
-							$casasAluguel	= Search::select('*')->where('operacao','=',2)->take(5)->get();
+							$casasAluguel	= Search::select('*')->where([['operacao',2,],['status',1]])->take(5)->get();
 							
 							foreach($casasAluguel as $value)
 							{

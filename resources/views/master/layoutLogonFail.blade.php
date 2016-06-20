@@ -250,8 +250,9 @@
 					<h3><i class="fa fa-home"></i>Oportunidades para venda</h3>
 						<div id="latest-work-footer" class="row">
 				        	<?php 
-							$teste	= $search::all()->take(5);
-							foreach($teste as $value)
+							$casasCompra	= Search::select('*')->where([['operacao',1],['status',1]])->take(5)->get();
+							
+							foreach($casasCompra as $value)
 							{
 								$foto = url(''.@$value->foto1.'');
 								$operacao		= @$value->operacao==1?@$value->tipo_imovel.' à venda':@$value->tipo_imovel.' para aluguel';
@@ -272,8 +273,9 @@
 					<h3><i class="fa fa-home"></i>Oportunidades para aluguel</h3>
 						<div id="latest-work-footer" class="row">
 				        	<?php 
-							$teste	= $search::all()->take(5);
-							foreach($teste as $value)
+							$casasAluguel	= Search::select('*')->where([['operacao',2,],['status',1]])->take(5)->get();
+							
+							foreach($casasAluguel as $value)
 							{
 								$foto = url(''.@$value->foto1.'');
 								$operacao		= @$value->operacao==1?@$value->tipo_imovel.' à venda':@$value->tipo_imovel.' para aluguel';
