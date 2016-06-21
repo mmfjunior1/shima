@@ -103,7 +103,7 @@ class AluguelController extends BaseController
     {
     	//$resultSet		= Cliente::find((int)$id);
     	$resultSet			= Cliente::select("*")
-    	->leftJoin('imoveis', 'clientes.id', '=', 'imoveis.id_cliente')
+    	->leftJoin('imoveis', 'clientes.id', '=', 'imoveis.inquilino')
     	->where('imoveis.id','=',$id)
     	->get();
     	$resultSet 		= $resultSet[0];

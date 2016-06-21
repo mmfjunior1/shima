@@ -38,7 +38,7 @@ class Aluguel extends Model
 			$array['nome']		 			= $dado;
 		}
 		
-		$imoveis 		= Aluguel::select(['clientes.id as id_cliente','clientes.nome','imoveis.*'])->join('clientes','imoveis.id_cliente','=', 'clientes.id')
+		$imoveis 		= Aluguel::select(['clientes.id as id_cliente','clientes.nome','imoveis.*'])->join('clientes','imoveis.inquilino','=', 'clientes.id')
 								->where('operacao','=',2)->where(function ($imoveis) use ($array){
 									foreach($array as $field=>$value)
 									{

@@ -141,7 +141,7 @@
           <div class="table-responsive">
           	<fieldset>
             <legend>Dados do inquilino</legend>
-            <input type="hidden" name="id_cliente" id="id_cliente"  value="{{{@$search->id_cliente}}}">
+            <input type="hidden" name="id_cliente" id="id_cliente"  value="{{{@$search->inquilino}}}">
             <input type="hidden" name="id_imovel" id="id_imovel"  value="{{{@$search->id}}}">
             <table class="table">
               <tbody>
@@ -203,7 +203,7 @@
             		<td><a class="btn btn-default" href="/admin/aluguel">Voltar</a></td>
             	</tr>
             </table>
-            <input type="hidden" name="id" id="id" value="{{{@$search->id_cliente}}}"> 
+            <input type="hidden" name="id" id="id" value="{{{@$search->inquilino}}}"> 
           </div>
         </div>
         </form>

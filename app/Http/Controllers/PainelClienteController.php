@@ -39,7 +39,7 @@ class PainelClienteController extends BaseController
     
     function financeiro()
     {
-    	$resultSet	= Search::select("*")->where(["id_cliente"=>$this->user->id,"operacao"=>2])->paginate(8);
+    	$resultSet	= Search::select("*")->where(["inquilino"=>$this->user->id,"operacao"=>2])->paginate(8);
     	
     	return view('contents.indexPainelClienteFinanceiroContent',['search'=>$resultSet,'user'=>$this->user]);
     }
