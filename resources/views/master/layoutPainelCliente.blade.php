@@ -20,7 +20,7 @@
     <!-- Custom styles for this template -->
     <link href="/css/dashboard.css" rel="stylesheet">
     
-    <link href="/css/dashboard.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets//js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -121,6 +121,15 @@
 		});
 		$(".imoveisCliente").click(function(){
 			window.location.href='/painelCliente/documentos';
+		});
+		$(".alugueis").click(function(){
+			window.location.href='/painelCliente/alugueis';
+		});
+		$(".alugueisReceber").click(function(){
+			window.location.href='/painelCliente/alugueis_a_receber';
+		});
+		$(".voltar").click(function(){
+			window.location.href='/painelCliente';
 		});
     </script>
     <script>

@@ -20,14 +20,14 @@
 			}
 		</style>
 		<div class="col-xs-offset-0 col-sm-12 col-md-12 col-xs-12 main" >
-          <h2 class="sub-header">Financeiro - Alugueis</h2> 
+          <h2 class="sub-header">Financeiro - Alugueis a receber</h2> 
           	@if(count($search) == 0)
 				<div role="alert" class="alert alert-danger alert-dismissible fade in"> 
 					<!-- button aria-label="Close" data-dismiss="alert" class="close" type="button">
 						<span aria-hidden="true">×</span>
 					</button>--> 
-					<h4>Nenhum imóvel alugado foi encontrado.</h4> 
-					<p>Não existem imóveis alugados por você até o momento. Em caso de dúvidas, entre em contato com a imobiliária.</p> 
+					<h4>Nenhum de seus imóveis consta como alugado em nosso sistema.</h4> 
+					<p>Você não tem alugueis a receber até o momento. Em caso de dúvidas, entre em contato com a imobiliária.</p> 
 					<p><!-- <button class="btn btn-danger" type="button">Voltar</button>--> 
 					<a class="btn btn-danger" href="/painelCliente/financeiro">Voltar</a>
 					<!-- <button class="btn btn-default" type="button">Or do this</button>--> </p> 
@@ -51,7 +51,7 @@
 	              		echo '<tr> 
 							<td>'.$value->logradouro.', '.$value->numero.' - '.$value->localidade.'</td> 
 							<td>'.Helpers::formatNumber($value->valor_imovel).'</td> 
-							<td><a href="/painelCliente/financeiro/'.$value->id.'">Alugueis</a></td> 
+							<td><a href="/painelCliente/alugueis_a_receber/'.$value->id.'">Alugueis</a></td> 
 						</tr>';
                 	}
                 ?>

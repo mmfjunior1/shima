@@ -20,48 +20,42 @@
 			}
 		</style>
 		<div class="col-xs-offset-0 col-sm-12 col-md-12 col-xs-12 main" >
-          <h2 class="sub-header">Financeiro - Alugueis</h2> 
+          <h2 class="sub-header">Financeiro - Alugueis a receber</h2> 
           	@if(count($search) == 0)
 				<div role="alert" class="alert alert-danger alert-dismissible fade in"> 
 					<!-- button aria-label="Close" data-dismiss="alert" class="close" type="button">
 						<span aria-hidden="true">×</span>
 					</button>--> 
-					<h4>Nenhum imóvel alugado foi encontrado.</h4> 
-					<p>Não existem imóveis alugados por você até o momento. Em caso de dúvidas, entre em contato com a imobiliária.</p> 
+					<h4>Nenhum aluguel a receber foi encontrado.</h4> 
+					<p>Não existem algueis registrados para esse imóvel até o momento. Em caso de dúvidas, entre em contato com a imobiliária.</p> 
 					<p><!-- <button class="btn btn-danger" type="button">Voltar</button>--> 
-					<a class="btn btn-danger" href="/painelCliente/financeiro">Voltar</a>
+					<a class="btn btn-danger" href="/painelCliente/alugueis_a_receber">Voltar</a>
 					<!-- <button class="btn btn-default" type="button">Or do this</button>--> </p> 
 				</div>
 				@else
-          		<table class="table table-striped"> 
-					<thead> 
-						<tr> 
-							<th width="50%">Endereço</th> 
-							<th width="40%">Valor do aluguel</th> 
-							<th>&nbsp;</th> 
-						</tr> 
-					</thead> 
-					<tbody> 
-				<?php 
+          	<div class="row cabecalho">
+			  <div class="col-xs-3 col-md-3">Data</div>
+			  <div class="col-xs-3 col-md-4">Valor</div>
+			  <div class="col-xs-3 col-md-4">Situação</div>
+			</div>
+				
+              	<?php 
               		$color= "";
               		foreach ($search as $value)
               		{
 	              		$data	= Helpers::dateFormat($value->data_vencimento);//Helpers::dateFormat($value->data_vencimento);
+	              		
 	              		$pago	= $value->pago == 't'?'Pago':'<span style="color:red">Pendente</span>';
-	              		echo '<tr> 
-							<td>'.$value->logradouro.', '.$value->numero.' - '.$value->localidade.'</td> 
-							<td>'.Helpers::formatNumber($value->valor_imovel).'</td> 
-							<td><a href="/painelCliente/financeiro/'.$value->id.'">Alugueis</a></td> 
-						</tr>';
+	              		$color	= $color == ""?"background:#F9F9F9":"";
+	              		echo '<div class="row" style="'.$color.'">
+			              		<div class="col-xs-3 col-md-3">'.$data.'</div>
+			              		<div class="col-xs-3 col-md-4">'.Helpers::formatNumber($value->valor).'</div>
+			              		<div class="col-xs-3 col-md-4">'.$pago.'</div>
+			              </div>';
                 	}
                 ?>
-                	</tbody> 
-				</table>
-				<div class="row">
-					{!! $search->links() !!}
-				</div>
                 <div class="row">
-				  <div class="col-xs-18 col-md-12"><a class="btn btn-default" href="/painelCliente/financeiro">Voltar</a></div>
+				  <div class="col-xs-18 col-md-12"><a class="btn btn-default" href="/painelCliente/alugueis_a_receber">Voltar</a></div>
 				</div>
 				@endif
         </div>

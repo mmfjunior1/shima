@@ -11,6 +11,7 @@ use App\ParcelasAluguel;
 use App\Search;
 use App\Documento;
 use Auth;
+
 class PainelClienteController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -37,6 +38,11 @@ class PainelClienteController extends BaseController
     	return view('contents.indexPainelClienteContent',['user'=>$resultSet]);
     }
     
+    function painelFinanceiro()
+    {
+    	return view('contents.indexPainelClienteFinanceiroContas',['user'=>$this->user]);
+    }
+    
     function financeiro()
     {
     	$resultSet	= Search::select("*")->where(["inquilino"=>$this->user->id,"operacao"=>2])->paginate(8);
@@ -44,11 +50,27 @@ class PainelClienteController extends BaseController
     	return view('contents.indexPainelClienteFinanceiroContent',['search'=>$resultSet,'user'=>$this->user]);
     }
     
+    function financeiroReceber()
+    {
+    	$resultSet	= Search::select("*")->
+    	join('aluguel','imoveis.id','=', 'aluguel.id')
+    	->
+    	where('inquilino','>',0)->where('id_cliente','=',$this->user->id)->paginate(8);
+    	return view('contents.indexPainelClienteFinanceiroContentReceber',['search'=>$resultSet,'user'=>$this->user]);
+    }
+    
     function alugueis($id = 0)
     {
     	$resultSet	= ParcelasAluguel::select("*")->where(["id"=>$id])->orderBy('data_vencimento','desc')->take(3)->get();
     	 
     	return view('contents.indexPainelClienteFinanceiroContentAlugueis',['search'=>$resultSet,'user'=>$this->user]);
+    }
+    
+    function alugueisReceber($id = 0)
+    {
+    	$resultSet	= ParcelasAluguel::select("*")->where(["id"=>$id])->orderBy('data_vencimento','desc')->take(3)->get();
+    
+    	return view('contents.indexPainelClienteFinanceiroContentAlugueisReceber',['search'=>$resultSet,'user'=>$this->user]);
     }
     
     function documentos()
