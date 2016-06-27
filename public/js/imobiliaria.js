@@ -261,7 +261,7 @@ $(document).ready(function(){
 		var params		= $("#formEmail").serialize();
 		if(nome.length == 0 || email.length == 0 || texto.length == 0)
 		{
-			$(".modal-body").html("<strong>Preencha os campos do formulÃ¡rio para enviar a mensagem.<br>Campo nome Ã© obrigatÃ³rio.<br>Campo email Ã© obrigatÃ³rio.<br>Um texto para a mensagem Ã© obrigatÃ³rio.</strong>")
+			$(".modal-body").html("<strong>Preencha os campos do formulário para enviar a mensagem.<br>Campo nome é obrigatório.<br>Campo email é obrigatório.<br>Um texto para a mensagem é obrigatório.</strong>")
 			$('#myModal').modal();
 			return ;
 		}
