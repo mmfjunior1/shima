@@ -1225,7 +1225,7 @@ body .brands.main li a:hover {
 /* JUMBOTRON 5 */
 
 .jumbotron5 {
-	background-image: url(../images/casa-propria-2.jpg);
+	background-image: url("../images/casa-propria-2.jpg");
 	padding:0;
 	height:500px;
 	background-position:center center;
@@ -1295,6 +1295,17 @@ body .brands.main li a:hover {
 	margin:100px 0 30px;
 }
 
+.jumbotron5.contatoForm h2 {
+	font-size: 30px;
+	line-height:0px;
+	padding:10px 0;
+	margin:10px 0 30px;
+	background: none !important;
+}
+.jumbotron5 p
+{
+	color:#fff;	
+}
 .jumbotron6 #slide-3 h3,
 .jumbotron5 h3 {
 	font-size: 36px;
@@ -1359,7 +1370,11 @@ body .jumbotron5 .btn:first-child:hover {
   	color:rgba(0,0,0,0.5);
 	margin:15px 20px 0;
 }
-
+.jumbotron5.contato
+{
+	
+	background-image: linear-gradient(rgba(10, 10, 10, 0.75), rgba(10, 10, 10, 0.20)), url("../images/casa-propria-2.jpg");
+}
 .btn-download {
 	width:170px;
 	height:60px;

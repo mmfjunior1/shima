@@ -20,6 +20,10 @@ Route::get('/index', function () {
 	return view('contents.indexContent');
 });
 
+Route::get('/contato', function () {
+		return view('contents.contatoContent');
+});
+
 Route::get('admin',['middleware'=>'administrator', function () 
 {
 	return view('contents.indexAdminContent');

@@ -350,8 +350,8 @@ use App\Search;
 		    <div class="footer-bottom">
 		    	
                 <ul class="nav navbar-nav navbar-center">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="https:///contactus">Fale Conosco</a></li>
+                    <li><a href="{{url('/')}}">Home</a></li>
+                    <li><a href="{{url('/contato')}}">Fale Conosco</a></li>
                 </ul>
             </div>
     </footer>
