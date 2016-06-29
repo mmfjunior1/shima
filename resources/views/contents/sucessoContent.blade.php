@@ -2,7 +2,7 @@
 
 @section('content')
 
-@section('title', "Ops! Página não encontrada...(404)")
+@section('title', "Agradecemos seu contato - Imobiliaria Shima")
 <style>
 	.preco  {
     color: #E92922 !important;
@@ -78,27 +78,11 @@
 		margin-left:-40px
 	}
 </style>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Atenção</h4>
-      </div>
-      <div class="modal-body">
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn btn-primary" data-dismiss="modal" id="btnOkModal">Ok</button>
-      </div>
-    </div>
-  </div>
-</div>
 <section class="content" id="section-introduction">
 	<div class="container">
-	    <h2>Ops! Página não econtrada!</h2>
-		<p>Tem certeza que você veio para a página certa?</p>
-		<p><a href ="{{url('/')}}" style="background:#E92922" class="btn btn-danger">Ir para a páina principal </a></p>
+	    <h2>Agradecemos o seu contato! &nbsp;<i class="fa fa-thumbs-o-up"></i></h2>
+		<p>Seu contato é muito importante para nós. Responderemos em breve!</p>
+		<p><a href ="/" style="background:#E92922" class="btn btn-danger">Ir para a páina principal </a></p>
 	</div>
 </section>
 

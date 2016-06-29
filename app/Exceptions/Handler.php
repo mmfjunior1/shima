@@ -45,6 +45,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+    	if ($e instanceof CustomException || $e->getFile()) {
+    		//echo $e->getFile();die;
+    		//return response()->view('contents.sucessoContent', [], 500);
+    		return redirect("/");
+    	}
         return parent::render($request, $e);
     }
 }

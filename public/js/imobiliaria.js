@@ -252,8 +252,6 @@ $(document).ready(function(){
 	});
 	
 	$(".btnEnviaEmailImovel").click(function(){
-		
-		
 		var nome 	= $("#nome").val();
 		var email 	= $("#emailcontato").val();
 		var texto	= $("#texto").val();
@@ -303,6 +301,65 @@ $(document).ready(function(){
                 });
 
 	});
+	
+	$(".send-now").click(function(){
+		var nome 		= $("#contact_name1").val();
+		var email 		= $("#contact_email1").val();
+		var texto		= $("#contact_message1").val();
+		var telefome	= $("#telefone").val();
+		var params		= $("#formContato").serialize();
+		if(nome.length == 0 || telefone.length < 3 || texto.length == 0)
+		{
+			$(".modal-body").html("<strong>Preencha os campos do formulário para enviar a mensagem.<br>Campo nome é obrigatório.<br>Campo telefone é obrigatório.<br>Um texto para a mensagem é obrigatório.</strong>")
+			$('#myModal').modal();
+			return ;
+		}
+		$.ajax({
+			url		: '/emailContato',
+			method 	: 'POST',
+			data	: params,
+			beforeSend: function(){
+				$(".send-now").html("<li class=\"fa fa-spinner fa-spin fa-2x\"></li>Enviando");
+				$(".send-now").attr("disabled","disabled");
+			},
+		}).done(function(response){
+			var textoErro = '';
+			if(response !='')
+			{
+				$.each(response,function(field,value)
+				{
+					if(field != 'statusOperation' && field !='id')
+					{
+						textoErro+=value+"<br>";
+					}
+				});
+				try{
+					if(response.statusOperation == true)
+					{
+						$("#formContato").submit();
+						return;
+					}
+				}catch(err){}
+				
+				if(textoErro!='')
+				{
+					$(".modal-body").html(textoErro);
+					$('#myModal').modal();
+				}
+				
+			}
+		}).error(function(){
+						$(".send-now").html("<i class=\"fa fa-envelope fa-2x\"></i>Enviar");
+						$(".send-now").removeAttr("disabled");
+                        $(".modal-body").html('<strong style="color:red">Desculpe, houve um erro ao enviar o email. <br> Estamos trabalhando para corrigir o problema. Tente novamente mais tarde.</strong>');
+                        $("#myModal").modal();
+                        $("#divProcessando").hide();
+			$(".btnEnviaEmailImovel").html("ENTRE EM CONTATO");
+                        $(".btnEnviaEmailImovel").removeAttr("disabled");
+                });
+
+	});
+	
 	$(".btnCad").click(function(){
 		var botamForm 	= $(this);
 	    var formulario 	= botamForm.closest('form');

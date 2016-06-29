@@ -24,6 +24,10 @@ Route::get('/contato', function () {
 		return view('contents.contatoContent');
 });
 
+Route::post('/obrigado', function () {
+	return view('contents.sucessoContent');
+});
+
 Route::get('admin',['middleware'=>'administrator', function () 
 {
 	return view('contents.indexAdminContent');
@@ -54,6 +58,8 @@ Route::get('/painelCliente/imovel/{id}',				['middleware'=>'auth','uses'	=>		'Pa
 Route::get('/painelCliente/sair',						['middleware'=>'auth','uses'	=>		'LoginController@logout']);
 
 Route::any('/emailAnuncio',								'SearchController@emailImovel');
+
+Route::any('/emailContato',								'SearchController@emailContato');
 
 Route::get('/imovel/{id}', 								'SearchController@viewImovel');
 

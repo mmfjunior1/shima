@@ -424,4 +424,75 @@ class SearchController extends BaseController
     	}
     	return $retorno;
     }
+    
+    public function emailContato( Request $request)
+    {
+    	$messages	= array(
+    			'contact_name1.required'	=>'O campo <strong>nome</strong> é obrigatório.',
+    			'contact_name1.min'			=>'O campo <strong>nome</strong> deve conter no mínimo :min caracteres.',
+    			'contact_name1.max'			=>'O campo <strong>nome</strong> deve conter no máximo :max caracteres.',
+    			'telefone.required'			=>'O campo <strong>telefone</strong> é obrigatório.',
+    			'telefone.min'				=>'O campo <strong>telefone</strong> deve conter no mínimo :min caracteres.',
+    			'telefone.max'				=>'O campo <strong>telefone</strong> deve conter no máximo :max caracteres.',
+    			'contact_message1.min'		=>'O campo <strong>para texto da mensagem</strong> deve conter no mínimo :min caracteres.',
+    			'contact_message1.max'		=>'O campo <strong>para texto da mensagem</strong> deve conter no máximo :max caracteres.',
+    			'emailcontato.email'		=>'O <strong>email</strong> informado não é válido.',
+    			'emailcontato.required'		=>'O <strong>email</strong> é obrigatório.',
+    			'emailcontato.max'			=>'O campo <strong>email</strong> deve conter no máximo :max caracteres.',
+    	);
+    
+    	$camposValidacao = array(
+    			'contact_name1'					=>'required|min:3|max:30',
+    			'telefone'						=>'required|min:8|max:16',
+    			'contact_message1'				=>'required|min:5|max:500',
+    			 
+    	);
+    	$validator	= Validator::make($request->all(),$camposValidacao,$messages);
+    	if($validator->fails())
+    	{
+    		return $validator->errors();
+    	}
+    	$email						= $request->contact_email1;
+    	$nome						= $request->contact_name1;
+    	$telefone					= $request->telefone;
+    	$texto						= strip_tags($request->contact_message1);
+    	$titulo						= "Contato direto do site";
+    	$url						= "";
+    	$dados						= array();
+    	$dados['id']				= 0;
+    	$dados['mensagem']			= $texto;
+    	$dados['email']				= $email;
+    	$dados['titulo']			= $titulo;
+    	$dados['nome']				= $nome;
+    	 
+    	$texto		= "<table>
+    	<tr>
+    	<td>Nome:</td>
+    	<td>$nome</td>
+    	</tr>
+    	<tr>
+    	<td>Email:</td>
+    	<td>$email</td>
+    	</tr>
+    	<tr>
+    	<td>Telefone:</td>
+    	<td>$telefone</td>
+    	</tr>
+    	<tr>
+    	<td>Texto enviado:</td>
+    	<td>$titulo <br>$texto</td>
+    	</tr>
+    	
+    	</table>";
+    	$email		= new MailController();
+    	$retorno	= $email->sendEmail($titulo, $texto);
+    	$decode		= json_decode($retorno->getContent());
+    	 
+    	if($decode->statusOperation == true)
+    	{
+    		$create	= Mensagem::create($dados);
+    		return response()->json(['msg'=>'<strong>Email enviado.</strong>','statusOperation'=>true]);
+    	}
+    	return $retorno;
+    }
 }
