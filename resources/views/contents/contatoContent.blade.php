@@ -17,13 +17,13 @@
     </div>
   </div>
 </div>
-<section class="jumbotron jumbotron5 contato contatoForm" style="height:400px">
+<section class="jumbotron jumbotron5 contato contatoForm" style="height:430px">
 	<div class="container" >
 		<div class="row">
 			<div class="container" style="padding:0px 30px 30px 30px;">
 				<div class="row">
 	                <h2>FALE CONOSCO</h2>
-	                <p>Se preferir ligue para <strong>+55 (11) 3328-6022</strong></p>  
+	                <p style="font-weight: 400">Ligue para <strong>(11) 3328-6022</strong><br>ou preencha o formulário abaixo.</p>  
 					<fieldset>
 						<form action="{{url('/obrigado')}}" method="post" id="formContato">
 						<input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
