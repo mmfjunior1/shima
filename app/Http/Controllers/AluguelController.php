@@ -188,7 +188,10 @@ class AluguelController extends BaseController
     			$a++;
     			try
     			{
+    				$dado	= ParcelasAluguel::select('boleto')->where('id_lancamento',$value)->get();
+    				
     				$update = ParcelasAluguel::where('id_lancamento',$value)->delete();
+    				
     				if($update != 1)
     				{
     					return response()->json(['msg'=>'<strong>Nenhum registro foi atualizado. Tente novamente.</strong>','statusOperation'=>false,]);
@@ -198,6 +201,9 @@ class AluguelController extends BaseController
     			{
     				return response()->json(['msg'=>'<strong>Erro ao executar operação!</strong><br><div style="color:red;font-weight:bold">['.$e->getMessage().']','statusOperation'=>false,'id'=>$request->id]);
     			}
+    			
+    			@unlink($dado[0]->boleto);
+    			
     		}
     		return response()->json(['msg'=>'<strong>Operação concluída.</strong>','statusOperation'=>true,'redirect'=>'/admin/aluguel/show/'.$dados['id_imovel']]);
     	}
