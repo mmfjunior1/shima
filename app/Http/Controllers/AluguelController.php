@@ -48,52 +48,57 @@ class AluguelController extends BaseController
     	$a 				= 0 ;
     	foreach($arrayBoletos as $obj)
     	{
-    		
-    		$ext			= $obj->guessExtension();
-    		$vencimento		= $request->vencimento[$a];
-    		$valor			= $request->valor[$a];
-    		
-    		if(!in_array($ext, $arrayTypes))
-    		{
-    			return response()->json(['msg'=>'<strong>Atenção: Nenhum boleto foi enviado. Os boletos devem ser do formato PDF.</strong>','statusOperation'=>false,]);
-    			break;
-    		}
-    		if($vencimento	== "")
-    		{
-    			return response()->json(['msg'=>'<strong>A data de vencimento do boleto '.($a+1).' não foi informada. Verifique as informações e tente novamente.</strong>','statusOperation'=>false,]);
-    			break;
-    		}
-    		
-    		if((float)$valor == 0)
-    		{
-    			return response()->json(['msg'=>'<strong>O valor do boleto '.($a+1).' não foi informado. Verifique as informações e tente novamente.</strong>','statusOperation'=>false,]);
-    			break;
-    		}
     		try
     		{
-    			$nomeArquivo							= "ImoBiliariaShima-".time().$idImovel."-".$a.".pdf";
-    			 
-    			$caminhoArquivo							= 'boletos/'.$nomeArquivo;
-    			if($obj->move('boletos',$nomeArquivo))
-    			{
-				$vencimento			= explode("/",$vencimento);
-    				$dado['data_vencimento'] 	= $vencimento[2].'-'.$vencimento[1].'-'.$vencimento[0];
-    			
-    				$dado['valor'] 				= $valor;
-    			
-    				$dado['id'] 				= $idImovel;
-    			
-    				$dado['boleto'] 			= $caminhoArquivo;
-    			
-    				$create	= ParcelasAluguel::create($dado);
-    			}
-    			
-    		}
-    		catch(\Exception $e)
+	    		$ext			= $obj->guessExtension();
+	    		$vencimento		= $request->vencimento[$a];
+	    		$valor			= $request->valor[$a];
+	    		
+	    		if(!in_array($ext, $arrayTypes))
+	    		{
+	    			return response()->json(['msg'=>'<strong>Atenção: Nenhum boleto foi enviado. Os boletos devem ser do formato PDF.</strong>','statusOperation'=>false,]);
+	    			break;
+	    		}
+	    		if($vencimento	== "")
+	    		{
+	    			return response()->json(['msg'=>'<strong>A data de vencimento do boleto '.($a+1).' não foi informada. Verifique as informações e tente novamente.</strong>','statusOperation'=>false,]);
+	    			break;
+	    		}
+	    		
+	    		if((float)$valor == 0)
+	    		{
+	    			return response()->json(['msg'=>'<strong>O valor do boleto '.($a+1).' não foi informado. Verifique as informações e tente novamente.</strong>','statusOperation'=>false,]);
+	    			break;
+	    		}
+	    		try
+	    		{
+	    			$nomeArquivo							= "ImoBiliariaShima-".time().$idImovel."-".$a.".pdf";
+	    			 
+	    			$caminhoArquivo							= 'boletos/'.$nomeArquivo;
+	    			if($obj->move('boletos',$nomeArquivo))
+	    			{
+					$vencimento			= explode("/",$vencimento);
+	    				$dado['data_vencimento'] 	= $vencimento[2].'-'.$vencimento[1].'-'.$vencimento[0];
+	    			
+	    				$dado['valor'] 				= $valor;
+	    			
+	    				$dado['id'] 				= $idImovel;
+	    			
+	    				$dado['boleto'] 			= $caminhoArquivo;
+	    			
+	    				$create	= ParcelasAluguel::create($dado);
+	    			}
+	    			
+	    		}
+	    		catch(\Exception $e)
+	    		{
+	    			return response()->json(['msg'=>'<strong>Erro ao executar operação!</strong><br><div style="color:red;font-weight:bold">['.$e->getMessage().']','statusOperation'=>false,'id'=>0]);
+	    		}
+	    		$a++;
+    		}catch(\Exception $e)
     		{
-    			return response()->json(['msg'=>'<strong>Erro ao executar operação!</strong><br><div style="color:red;font-weight:bold">['.$e->getMessage().']','statusOperation'=>false,'id'=>0]);
+    			
     		}
-    		$a++;
     	}
     	
     	return response()->json(['msg'=>'<strong>Operação concluída</strong>','statusOperation'=>true,'redirect'=>'/admin/aluguel/show/'.$idImovel]);
