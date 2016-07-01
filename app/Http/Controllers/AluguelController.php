@@ -135,6 +135,7 @@ class AluguelController extends BaseController
     			$a++;
     			try
     			{
+    				$dado	= ParcelasAluguel::select('boleto')->where('id_lancamento',$value)->get();
     				$update = ParcelasAluguel::where('id_lancamento',$value)->update($dadosPago);
     				if($update != 1)
     				{
@@ -144,6 +145,10 @@ class AluguelController extends BaseController
     			catch(\Exception $e)
     			{
     				return response()->json(['msg'=>'<strong>Erro ao executar operação!</strong><br><div style="color:red;font-weight:bold">['.$e->getMessage().']','statusOperation'=>false,'id'=>$request->id]);
+    			}
+    			if($dadosPago['pago'] == 't')
+    			{
+    				@unlink($dado[0]->boleto);
     			}
     		}
     		return response()->json(['msg'=>'<strong>Operação concluída.</strong>','statusOperation'=>true,]);

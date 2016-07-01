@@ -192,8 +192,9 @@
 	                	}
                 	
                 ?>
-                
+             <tr><td colspan="5">{!! $parcelas->links() !!}</td></tr> 
             </table>
+            
             </fieldset>
            	<table class="table">
             	<tr>
