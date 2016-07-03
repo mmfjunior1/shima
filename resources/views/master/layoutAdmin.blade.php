@@ -117,5 +117,40 @@
         
 	});
     </script>
+    <script>
+		$( document ).ready(function(){
+			$('.valorReais').keypress(function (e) { 
+				
+			    var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+
+			    // Firefox will trigger this even on nonprintabel chars... allow them.
+			    switch (charCode) {
+			        case 8: // Backspace
+			        case 0: // Arrow keys, delete, etc
+			            return true;
+			        default:
+			    }
+
+			    var lastChar =  String.fromCharCode(charCode);
+
+			    // Reject anything not numbers or a comma
+			    if (!lastChar.match("[0-9]|[.]")) {return false;}
+
+			    // Reject comma if 1st character or if we already have one
+			    if (lastChar == "." && this.value.length == 0) {return false;}
+			    if (lastChar == "." && this.value.indexOf(".") != -1) {return false;}
+
+			    // Cut off first char if 0 and we have a comma somewhere
+			    if (this.value.indexOf(".") != -1 && this.value[0] == "0") {
+			        this.value = this.value.substr(1);
+			    }
+
+			    return true;
+			});
+		});
+		
+
+					
+		</script>
   </body>
 </html>

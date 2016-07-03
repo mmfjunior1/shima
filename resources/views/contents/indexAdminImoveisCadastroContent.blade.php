@@ -146,7 +146,7 @@
                   	?>
                   </select></td>
                   <td width="7%">Valor R$:</td>
-                  <td> <input type="text" name="valor_imovel" id="valor_imovel" value="{{{@$search->valor_imovel}}}"></td>
+                  <td> <input type="text" name="valor_imovel" id="valor_imovel" class="valorReais" value="{{{@$search->valor_imovel}}}"></td>
                   <td>Operação:</td>
                   <td><select name="operacao">
                   		<option value="1" <?php if (@$search->operacao == '1'?print("selected=\"selected\""):'')?>>Venda</option>

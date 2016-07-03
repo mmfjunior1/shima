@@ -23,7 +23,7 @@
 			<div class="container" style="padding:0px 30px 30px 30px;">
 				<div class="row">
 	                <h2>FALE CONOSCO</h2>
-	                <p style="font-weight: 400">Ligue para <strong>(11) 3328-6022</strong><br>ou preencha o formulário abaixo.</p>  
+	                <p style="font-weight: 400">Ligue para <strong>(11) 2506-0305</strong><br>ou preencha o formulário abaixo.</p>  
 					<fieldset>
 						<form action="{{url('/obrigado')}}" method="post" id="formContato">
 						<input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
