@@ -1,3 +1,6 @@
+<?php
+use App\helpers\Helpers;
+?>
 @extends('master.layoutAdmin')
 @section('title', 'Imob Admin - Licenciado para Imobiliária Shima')
 @section('content')
@@ -84,7 +87,7 @@
 								      <div class="input-group-addon addon-pointer inputParcelas" onclick="$('#data1').focus()"><span class="glyphicon glyphicon-calendar"></span></div>
 								    </div>
 			            		</td>
-			            		<td align="center"><input type="text" name="valor[]" id="valor1" value="{{{@$search->valor_imovel}}}" class="form-control inputParcelas " ></td>
+			            		<td align="center"><input type="text" name="valor[]" id="valor1" value="{{{@$search->valor_imovel}}}" class="form-control inputParcelas valorReais " ></td>
 			            		<td><input type="file" name="boleto[]" id="boleto"></td>
 			            	</tr>
 			            	<tr>
@@ -94,7 +97,7 @@
 								      <div class="input-group-addon addon-pointer inputParcelas" onclick="$('#data2').focus()"><span class="glyphicon glyphicon-calendar"></span></div>
 								    </div>
 			            		</td>
-			            		<td align="center"><input type="text" name="valor[]" id="valor2" value="{{{@$search->valor_imovel}}}" class="form-control inputParcelas " ></td>
+			            		<td align="center"><input type="text" name="valor[]" id="valor2" value="{{{@$search->valor_imovel}}}" class="form-control inputParcelas valorReais " ></td>
 			            		<td> <input type="file" name="boleto[]" ></td>
 			            	</tr>
 			            	<tr>
@@ -104,7 +107,7 @@
 								      <div class="input-group-addon addon-pointer inputParcelas" onclick="$('#data3').focus()"><span class="glyphicon glyphicon-calendar"></span></div>
 								    </div>
 			            		</td>
-			            		<td align="center"><input type="text" name="valor[]" id="valor3" value="{{{@$search->valor_imovel}}}" class="form-control inputParcelas "></td>
+			            		<td align="center"><input type="text" name="valor[]" id="valor3" value="{{{@$search->valor_imovel}}}" class="form-control inputParcelas valorReais "></td>
 			            		<td><input type="file" name="boleto[]" ></td>
 			            	</tr>
 			            	<tr>
@@ -114,7 +117,7 @@
 								      <div class="input-group-addon addon-pointer inputParcelas" onclick="$('#data4').focus()"><span class="glyphicon glyphicon-calendar"></span></div>
 								    </div>
 			            		</td>
-			            		<td align="center"><input type="text" name="valor[]" id="valor4" value="{{{@$search->valor_imovel}}}" class="form-control inputParcelas "></td>
+			            		<td align="center"><input type="text" name="valor[]" id="valor4" value="{{{@$search->valor_imovel}}}" class="form-control inputParcelas valorReais "></td>
 			            		<td><input type="file" name="boleto[]" ></td>
 			            	</tr>
 			            	<tr>
@@ -124,7 +127,7 @@
 								      <div class="input-group-addon addon-pointer inputParcelas" onclick="$('#data5').focus()"><span class="glyphicon glyphicon-calendar"></span></div>
 								    </div>
 			            		</td>
-			            		<td align="center"><input type="text" name="valor[]" id="valor5" value="{{{@$search->valor_imovel}}}" class="form-control inputParcelas "></td>
+			            		<td align="center"><input type="text" name="valor[]" id="valor5" value="{{{@$search->valor_imovel}}}" class="form-control inputParcelas valorReais "></td>
 			            		<td><input type="file" name="boleto[]" ></td>
 			            	</tr>
 			            </table>
@@ -181,7 +184,7 @@
 	                		
 	                		echo '<tr>
 				                  <td width="10%">'.$value->id_lancamento.'</td>
-				                  <td width="20%">'.$value->valor.'</td>
+				                  <td width="20%">'.Helpers::formatNumber($value->valor).'</td>
 				                  <td width="30%">'.$data.'</td>
 				                  <td width="20%"><select name="pago[]">
 	        							<option value="t" '.$selectPago.' >Sim</option>

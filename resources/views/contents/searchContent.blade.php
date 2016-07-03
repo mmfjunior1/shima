@@ -1,3 +1,6 @@
+<?php
+//use App\helpers\Helpers;
+?>
 @extends('master.layout')
 @section('title', 'Casas à venda - Imobiliaria Shima')
 @section('content')
@@ -61,7 +64,7 @@
 							$operacao			= $results->operacao==1?'à venda':'para aluguel';
 							$endereco			= $results->logradouro.', '.$results->numero;
 							$bairro				= $results->bairro.' - '.$results->localidade.', '.$results->uf;
-							$valor				= number_format($results->valor_imovel,2,",",".");
+							$valor				= Helpers::formatNumber($results->valor_imovel);
 							$area				= $results->area;
 							$quartos			= $results->quartos;
 							$banheiros			= $results->banheiros;
