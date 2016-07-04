@@ -27,6 +27,7 @@
                 }
                 ?>
               </tbody>
+              <tr><td colspan="3">{!! $search->links() !!}</td></tr>
             </table>
           </div>
         </div>
