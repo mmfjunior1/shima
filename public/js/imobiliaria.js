@@ -386,11 +386,11 @@ $(document).ready(function(){
 				action 		= idBtn;
 			break;
 		}
-		
 		$.ajax({
 			url		: '/admin/'+actionForm+'/'+action,
 			method 	: 'POST',
 			data	: params,
+			async	:false,
 			beforeSend: function(){
 				$("#divProcessando").show();
 			},
