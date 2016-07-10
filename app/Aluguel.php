@@ -47,7 +47,9 @@ class Aluguel extends Model
 									{
 										$imoveis->orWhere($field,'ilike','%'.$value.'%');
 									}
-								})->paginate($page)->appends(['dado'=>$dado]);
+								})
+								->orderBy('codigo_imobiliaria')
+								->paginate($page)->appends(['dado'=>$dado]);
 								
 								
 		return ['search'=>$imoveis,'dado'=>$dado];
