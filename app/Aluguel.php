@@ -36,6 +36,8 @@ class Aluguel extends Model
 			$array['imoveis.localidade'] 	= $dado;
 			$array['imoveis.uf'] 			= $dado;
 			$array['nome']		 			= $dado;
+			$array['codigo_imobiliaria']	= $dado;
+			
 		}
 		
 		$imoveis 		= Aluguel::select(['clientes.id as id_cliente','clientes.nome','imoveis.*'])

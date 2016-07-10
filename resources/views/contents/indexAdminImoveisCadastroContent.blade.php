@@ -134,7 +134,7 @@
             <table class="table">
               <tbody>
                 <tr>
-                <td width="10%">Código Imobiliaria:</td>
+                <td width="10%">Código imóvel:</td>
                   <td>
                   	<input type="text" maxlength="9" name="codigo_imobiliaria" id="codigo_imobiliaria" value="{{{@$search->codigo_imobiliaria}}}"> 
                   </td>

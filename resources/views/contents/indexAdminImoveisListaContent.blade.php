@@ -20,17 +20,17 @@
           
           <div class="table-responsive">
             <table class="table table-striped">
-              <tdead>
+              <thead>
                 <tr>
                   <td width="5%" >#</td>
-                  <td width="15%" >Cód. Imobiliaria</td>
+                  <td width="15%" >Cód. Imóvel</td>
                   <td width="10%">Preço</td>
                   <td width="30%">Tipo</td>
                   <td width="10%">Operação</td>
                   <td>Cadastrado em</td>
                   <td>Status</td>
                 </tr>
-              </tdead>
+              </thead>
               <tbody>
                 <?php 
                 foreach ($search as $value)
