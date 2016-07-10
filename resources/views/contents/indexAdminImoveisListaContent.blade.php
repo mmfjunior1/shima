@@ -23,9 +23,10 @@
               <tdead>
                 <tr>
                   <td width="5%" >#</td>
+                  <td width="15%" >Cód. Imobiliaria</td>
                   <td width="10%">Preço</td>
                   <td width="30%">Tipo</td>
-                  <td width="30%">Operação</td>
+                  <td width="10%">Operação</td>
                   <td>Cadastrado em</td>
                   <td>Status</td>
                 </tr>
@@ -79,6 +80,7 @@
                 	}
 	                echo '<tr>
 	                  <td align="left"><a href="/admin/imoveis/show/'.$value->id.'">'.$value->id.'</a></td>
+                	  <td align="left"><a href="/admin/imoveis/show/'.$value->id.'">'.$value->codigo_imobiliaria.'</a></td>
 	                  <td align="left">'.$value->valor_imovel.' </td>
 	                  <td align="left">'.$tipoImovel.'</td>
               		   <td align="left">'.$operacao.'</td>

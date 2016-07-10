@@ -268,12 +268,16 @@ class SearchController extends BaseController
     	$resultSet						= $dadosImovel::find((int)$request->id);
     	
     	$dados							= $request->all();
-    	
+    	if(!strstr($dados['codigo_imobiliaria'], "-"))
+    	{
+    		return response()->json(['msg'=>'<strong>O formato do código do imóvel está incorreto. Acrescente o hífen no código para continuar com a operação.</strong>','statusOperation'=>false,'id'=>0]);
+    	}
     	if($dados['cpf'] == $dados['cpf_inquilino'] &&( $dados['cpf'] != "" && $dados['cpf_inquilino'] !=""))
     	{
     		return response()->json(['msg'=>'<strong>O CPF do proprietário não pode ser igual ao cpf do inquilino!</strong>','statusOperation'=>false,'id'=>0]);
     	}	 
-    	
+    	$explodeCodOrdenacao			= explode("-",$dados['codigo_imobiliaria']);
+    	$dados['codigo_ordenacao']		= $explodeCodOrdenacao[0];	
     	$dados['quartos']				= (int)$dados['quartos'];
     	$dados['suites']				= (int)$dados['suites'];
     	$dados['vagas']					= (int)$dados['vagas'];

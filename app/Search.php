@@ -8,7 +8,7 @@ class Search extends Model
 {
     //
 	protected $table = 'imoveis';
-	protected $fillable		= ['id_cliente','inquilino', 'tipo','valor_imovel','operacao','area','quartos','suites','banheiros','vagas','cep','logradouro','numero','bairro','localidade','uf','latitude','longitude','status'];
+	protected $fillable		= ['id_cliente','inquilino', 'tipo','valor_imovel','operacao','area','quartos','suites','banheiros','vagas','cep','logradouro','numero','bairro','localidade','uf','latitude','longitude','status','codigo_imobiliaria','codigo_ordenacao'];
 	
 	public function pegaDadosImoveis($request = null, $page = 8, $admin = false)
 	{
@@ -63,7 +63,10 @@ class Search extends Model
 			if(count($array) > 0)
 			{
 				
-				$imoveis	= Search::select('*')->join('tipo_imovel','imoveis.tipo','=','tipo_imovel.id_tipo')->where($array)->paginate($page)->appends($array);
+				$imoveis	= Search::select('*')->join('tipo_imovel','imoveis.tipo','=','tipo_imovel.id_tipo')
+				->where($array)
+				->orderBy('codigo_ordenacao')
+				->paginate($page)->appends($array);
 			}
 			else
 			{
@@ -104,6 +107,7 @@ class Search extends Model
 				$array['imoveis.localidade'] 	= $dado;
 				$array['imoveis.uf'] 			= $dado;
 				$array['nome']		 			= $dado;
+				$array['codigo_imobiliaria']	= $dado;
 				
 			}
 			if(count($array) > 0)
