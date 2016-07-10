@@ -119,11 +119,15 @@ class Search extends Model
 											
 											$imoveis->orWhere($field,'ilike','%'.$value.'%');
 										}
-									})->paginate($page)->appends(['dado'=>$dado]);
+									})
+									->orderBy('codigo_ordenacao')
+									->paginate($page)->appends(['dado'=>$dado]);
 			}
 			else
 			{
-				$imoveis 		= Search::select('imoveis.*')->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')->paginate($page);
+				$imoveis 		= Search::select('imoveis.*')->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')->
+				orderBy('codigo_ordenacao')
+				->paginate($page);
 			}
 			return ['search'=>$imoveis,'dado'=>$dado];
 		}
