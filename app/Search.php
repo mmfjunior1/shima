@@ -13,16 +13,21 @@ class Search extends Model
 	public function pegaDadosImoveis($request = null, $page = 8, $admin = false)
 	{
 		//$imoveis 		= Search::paginate(20);
-		$localidade			= $request->localidade;
+		$localidade			= urldecode($request->localidade);
 		$logradouro			= $request->logradouro;
 		$bairro				= $request->bairro;
 		$uf					= $request->uf;
 		$operacao			= (int)$request->operacao;
-		$tipoImovel			= (int)$request->tipo_imovel;
+		$tipoImovel			= (int)$request->tipo;
 		$area				= $request->area;
 		$tipo				= ucfirst(strtolower(trim($request->tipo_imovel)));
 		$route				= $request->route;
+		$valor				= (float)$request->valor;
 		$array				= array();
+		if($valor > 0)
+		{
+			$array['valor_imovel']		= $valor;
+		}
 		if($tipo)
 		{
 			$array['tipo_imovel']		= $tipo;
@@ -72,15 +77,15 @@ class Search extends Model
 			{
 				$imoveis		= Search::select('*')->join('tipo_imovel','imoveis.tipo','=','tipo_imovel.id_tipo')->paginate($page)->appends($array);
 			}
-			$imovelCidade 	= DB::table('imoveis')->select(DB::raw('count(localidade) as conta, localidade'))->groupBy('localidade')->get();
-			$imovelOperacao	= DB::table('imoveis')->select(DB::raw('count(operacao) as conta,operacao'))->groupBy('operacao')->get();
-			$imovelTipo		= DB::table('imoveis')->select(DB::raw('count(tipo) as conta,tipo_imovel,tipo'))->join('tipo_imovel','imoveis.tipo','=','tipo_imovel.id_tipo')->groupBy(array('tipo_imovel','tipo'))->get();
-			$areaTotal		= DB::table('imoveis')->select(DB::raw('count(area) as conta,area'))->groupBy(array('area'))->get();
-			$maiorPreco		= DB::table('imoveis')->max('valor_imovel');
-			$menorPreco		= DB::table('imoveis')->min('valor_imovel');
-			$maiorPreco		= number_format($maiorPreco,2,",",".");
-			$menorPreco		= number_format($menorPreco,2,",",".");
-			return ['search'=>$imoveis,'areaTotal'=>$areaTotal, 'imovelCidade'=>$imovelCidade,'imovelOperacao'=>$imovelOperacao,'tipoImovel'=>$imovelTipo,'maiorPreco'=>$maiorPreco,'menorPreco'=>$menorPreco,"tipo"=>$tipo,"logradouro"=>$logradouro,"route"=>$route,'count'=>count($imoveis)];
+			$imovelCidade 		= DB::table('imoveis')->select(DB::raw('count(localidade) as conta, localidade'))->where('status','=','t')->groupBy('localidade')->get();
+			$imovelOperacao		= DB::table('imoveis')->select(DB::raw('count(operacao) as conta,operacao'))->where('status','=','t')->groupBy('operacao')->get();
+			$imovelTipo			= DB::table('imoveis')->select(DB::raw('count(tipo) as conta,tipo_imovel,tipo'))->join('tipo_imovel','imoveis.tipo','=','tipo_imovel.id_tipo')->where('status','=','t')->groupBy(array('tipo_imovel','tipo'))->get();
+			$areaTotal			= DB::table('imoveis')->select(DB::raw('count(area) as conta,area'))->where('status','=','t')->groupBy(array('area'))->get();
+			$maiorPrecoImovel	= DB::table('imoveis')->where('status','=','t')->max('valor_imovel');
+			$menorPrecoImovel	= DB::table('imoveis')->where('status','=','t')->min('valor_imovel');
+			$maiorPreco			= number_format($maiorPrecoImovel,2,",",".");
+			$menorPreco			= number_format($menorPrecoImovel,2,",",".");
+			return ['search'=>$imoveis,'areaTotal'=>$areaTotal, 'imovelCidade'=>$imovelCidade,'imovelOperacao'=>$imovelOperacao,'tipoImovel'=>$imovelTipo,'maiorPreco'=>$maiorPreco,'menorPreco'=>$menorPreco,"tipo"=>$tipo,"logradouro"=>$logradouro,"route"=>$route,'count'=>count($imoveis),"maiorPrecoNonFormat"=>$maiorPrecoImovel,"menorPrecoNonFormat"=>$menorPrecoImovel];
 		}
 		
 		if($admin == true)

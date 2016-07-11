@@ -147,7 +147,7 @@
 		           			{
 		           				
 		           		?>
-							<span class="color_back">SP - <a style="text-decoration:none;" href="busca/?localidade={{$agrupamentoCidade->localidade}}&estado=SP">{{$agrupamentoCidade->localidade}}</a> </span><span class="color_gray">[{{$agrupamentoCidade->conta}}]</span><br>
+							<span class="color_back">SP - <a style="text-decoration:none;" href="busca/?localidade={{urlencode($agrupamentoCidade->localidade)}}">{{$agrupamentoCidade->localidade}}</a> </span><span class="color_gray">[{{$agrupamentoCidade->conta}}]</span><br>
 						<?php 	
 							}
 						?>
@@ -174,7 +174,7 @@
 		           			{
 		           				
 			           		?>
-			           			<span class="color_red"><a style="text-decoration:none;" href="busca?tipo_imovel={{$agrupamentoTipoImovel->tipo}}">{{$agrupamentoTipoImovel->tipo_imovel}}</a></span><span class="color_gray"> [{{$agrupamentoTipoImovel->conta}}]</span><br>
+			           			<span class="color_red"><a style="text-decoration:none;" href="busca?tipo_imovel={{urlencode($agrupamentoTipoImovel->tipo_imovel)}}">{{$agrupamentoTipoImovel->tipo_imovel}}</a></span><span class="color_gray"> [{{$agrupamentoTipoImovel->conta}}]</span><br>
 							<?php 	
 								}
 							?>
@@ -196,11 +196,11 @@
 					  
 					  <h4>Maior preço</h4>
 					  <div id="faixaPrecoMax" class="faixaPreco">
-						  <span class="color_red"></span> <span class="color_black"><strong><a href="lista_anuncios.php?preco_maximo=true&amp;valor=60000.00" style="text-decoration:none;">R$ {{$maiorPreco}}</a></strong></span><br>
+						  <span class="color_red"></span> <span class="color_black"><strong><a href="busca?valor={{$maiorPrecoNonFormat}}" style="text-decoration:none;">R$ {{$maiorPreco}}</a></strong></span><br>
 					  </div>
 				   <h4>Menor preço</h4>
 					  <div id="faixaPrecoMin" class="faixaPreco">
-						  <span class="color_red"></span> <span class="color_black"><strong><a href="lista_anuncios.php?preco_minimo=true&amp;valor=3900.00" style="text-decoration:none;">R$ {{$menorPreco}}</a></strong></span><br>
+						  <span class="color_red"></span> <span class="color_black"><strong><a href="busca?valor={{$menorPrecoNonFormat}}" style="text-decoration:none;">R$ {{$menorPreco}}</a></strong></span><br>
 					</div>
 				   
 		        </div>
