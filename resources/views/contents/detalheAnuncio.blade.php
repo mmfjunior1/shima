@@ -223,6 +223,7 @@ $(document).ready(function(){
 	initMap({{$latitude}},{{$longitude}});
   $('.slider1').bxSlider({
     minSlides: 1,
+    adaptiveHeight: true,
   });
   $(".results").css("visibility","visible");
 });

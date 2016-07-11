@@ -92,7 +92,8 @@
 							</div>
 								<div class="col-lg-6 col-md-5 col-xs-4">
 									<div class="eshop-product-body">
-										<h3 title="Carolina">{{{$tipoImovelVenda}}}<span style="color:#E92922;"> {{$operacao}}</span>
+										<h3 title="{{{$tipoImovelVenda}}} {{{$operacao}}}">{{{$tipoImovelVenda}}}<a href="imovel/{{$id}}"><span style="color:#E92922;"> {{$operacao}}</span>
+										</a>
 										</h3>
 										<p></p>
 										<span style="color:#000;">{{{$endereco}}}</span>
@@ -112,8 +113,8 @@
 										</ul>
 										<p></p>
 										<div>
-											   <a href="imovel/{{$id}}"class="btn btn-primary" style="font-size:10px;float:left">Ver detalhes da oferta</a>&nbsp;
-											    <button class="btn btn-primary" style="font-size:10px;float:left;margin-left:10px">Entre em contato</button>            
+											   <a href="imovel/{{$id}}"class="btn btn-primary" style="font-size:10px;float:left;width:100%">Ver detalhes da oferta</a>&nbsp;
+											   <!-- <button class="btn btn-primary" style="font-size:10px;float:left;margin-left:10px">Entre em contato</button>-->            
 										</div>
 										
 									</div>
@@ -136,7 +137,7 @@
 				
 			</div>
 			
-			<div class="col-md-3 eshop-content menu" style="top: 0px;" id="mustafa">
+			<div class="col-md-3 eshop-content menu hidden-xs hidden-md hidden-sm" style="top: 0px;" id="mustafa">
 				<div class="list_filter_options">
 					<h4 class="tituloDivFilter">Refinar busca</h4>
 					<hr class="hrFilter">
@@ -220,6 +221,7 @@ $(document).ready(function()
 {
   $('.slider1').bxSlider({
     minSlides: 1,
+    adaptiveHeight: true,
   });
   $(".results").css("visibility","visible");
 });
