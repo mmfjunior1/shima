@@ -437,7 +437,7 @@ $(document).ready(function(){
 			}
 		}).error(function(){
 			$(".modal-body").html('<strong style="color:red">Houve uma falha ao realizar a operação. Entre em contato com o administrador do sistema.</strong>');
-                        $('#myModal').modal();
+             $('#myModal').modal();
 			$("#divProcessando").hide();
 		});
 	});
