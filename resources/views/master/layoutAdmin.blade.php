@@ -82,7 +82,8 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="#">Menu <span class="sr-only">(current)</span></a></li>
-            <li><a href="/admin/clientes">Cadastro de clientes</a></li>
+            <li><a href="/admin/proprietarios">Cadastro de proprietários</a></li>
+            <li><a href="/admin/clientes">Cadastro de inquilinos</a></li>
             <li><a href="/admin/imoveis">Cadastro de imóveis</a></li>
             <li><a href="/admin/aluguel">Gestão de alugueis</a></li>
             <li><a href="/admin/docs">Gestão de documentos</a></li>

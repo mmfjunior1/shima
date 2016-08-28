@@ -67,9 +67,15 @@ Route::get('/imovel/{id}', 								'SearchController@viewImovel');
 //Rotas possíveis para cadastro de clientes
 Route::get('admin/clientes', 						['middleware'=>'administrator','uses'	=>'ClienteController@index']);
 
+Route::get('admin/proprietarios', 					['middleware'=>'administrator','uses'	=>'ClienteController@index']);
+
 Route::any('admin/clientes/search', 				['middleware'=>'administrator','uses'	=>'ClienteController@index']);
 
+Route::any('admin/proprietarios/search', 			['middleware'=>'administrator','uses'	=>'ClienteController@index']);
+
 Route::get('admin/clientes/cadastro',				['middleware'=>'administrator','uses'	=>'ClienteController@create']);
+
+Route::get('admin/proprietarios/cadastro',			['middleware'=>'administrator','uses'	=>'ClienteController@create']);
 
 Route::post('admin/clientes/gravar', 				['middleware'=>'administrator','uses'	=>'ClienteController@store']);
 
@@ -78,6 +84,8 @@ Route::post('admin/clientesuser/gravar',			['middleware'=>'auth','uses'			=>'Cli
 Route::post('admin/clientes/cancelar',				['middleware'=>'administrator','uses'	=>'ClienteController@cancelar']);
 
 Route::get('admin/clientes/show/{id}',				['middleware'=>'administrator','uses'	=>'ClienteController@show']);
+
+Route::get('admin/proprietarios/show/{id}',			['middleware'=>'administrator','uses'	=>'ClienteController@show']);
 
 Route::post('admin/clientes/excluir',				['middleware'=>'administrator','uses'	=>'ClienteController@delete']);
 

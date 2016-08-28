@@ -16,6 +16,7 @@ class ClienteController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     public $actionForm	= '/admin/clientes/search';
+    public $actionForm1	= '/admin/proprietarios/search';
     public $urlEdit		= '/admin/clientes/show/';
     public $titulo		= 'Clientes';
     public $urlStore	= '/admin/clientes/cadastro';
@@ -23,7 +24,13 @@ class ClienteController extends BaseController
     public function listaClientesDb($request)
     {
     	$array				= array();
+    	
+    	$tipoCliente		= $this->tipoCliente($request->url());
+    	
+    	$tipo				= $tipoCliente['tipo'];
+    	
     	$dado				= $request->dado;
+    	
     	if($dado)
     	{
     		$cpf	= $dado;
@@ -44,27 +51,36 @@ class ClienteController extends BaseController
     			{
     				$clientes->orWhere($field,'ilike','%'.$value.'%');
     			}
-    		})->paginate(10)->appends(['dado'=>$dado]);
+    		})->where('tipo','=',$tipo)->paginate(10)->appends(['dado'=>$dado]);
     	}
     	else
     	{
-    		$clientes 		= Cliente::select('clientes.*')->paginate(10);
+    		$clientes 		= Cliente::select('clientes.*')->where('tipo','=',$tipo)->paginate(10);
     	}
-    	return ['search'=>$clientes,'dado'=>$dado];
+    	return ['search'=>$clientes,'dado'=>$dado,'tipo'=>$tipoCliente];
     }
     
     public function index( Request $request )
     {
     	$array							= array();
+    	
     	$dado							= $request->dado;
+    	
     	$clienteLista					= $this->listaClientesDb($request);
+    	
     	$viewDefinition					= array();
-    	$viewDefinition['titulo']		= $this->titulo;
-    	$viewDefinition['actionForm']	= $this->actionForm;
-    	$viewDefinition['urlEdit']		= $this->urlEdit;
-    	$viewDefinition['urlStore']		= $this->urlStore;
+    	
+    	$viewDefinition['titulo']		= /*$this->titulo;*/$clienteLista['tipo']['descricao2'];
+    	
+    	$viewDefinition['actionForm']	= str_replace("/search", "", $request->url()).'/search';
+    	
+    	$viewDefinition['urlEdit']		= str_replace("/search", "", $request->url()).'/show/';
+    	
+    	$viewDefinition['urlStore']		= str_replace("/search","",$request->url()).'/cadastro';
+    	
     	$viewDefinition['btnIncluir']	= '<a href="'.$viewDefinition['urlStore'].'" class="btn btn-primary">Incluir</a>';
-    	return view('contents.indexAdminClientesListaContent',['search'=>$clienteLista['search'],'dado'=>$clienteLista['dado'],'viewDefinition'=>$viewDefinition]);
+    	
+    	return view('contents.indexAdminClientesListaContent',['search'=>$clienteLista['search'],'dado'=>$clienteLista['dado'],'viewDefinition'=>$viewDefinition,]);
     }
     
     public function clientesDocs(Request $request)
@@ -97,9 +113,27 @@ class ClienteController extends BaseController
     	return view('contents.indexAdminDocumentosCadastroContent',['search'=>$resultSet,'documentos'=>$documentos]);
     }
     
-    public function create()
+    public function create(Request $request)
     {
-    	return view('contents.indexAdminClientesCadastroContent');
+    	$tipoCliente	= $this->tipoCliente($request->url());
+    	
+    	$urlVoltar						= str_replace("/cadastro","",$request->url());
+    	
+    	return view('contents.indexAdminClientesCadastroContent',array('tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar));
+    }
+    
+    function tipoCliente($str)
+    {
+    	if(strstr($str, 'proprietarios'))
+    	{
+    		return array('tipo'=>'p','descricao'=>'Proprietario','descricao2'=>'Proprietarios');
+    	}
+    	
+    	if(strstr($str, 'clientes'))
+    	{
+    		return array('tipo'=>'c','descricao'=>'Inquilino','descricao2'=>'Inquilinos');
+    	}
+    	return false;
     }
     
     public function store(Request $request)
@@ -244,9 +278,12 @@ class ClienteController extends BaseController
     	}
     }
     
-    public function show($id = 0,$json = false)
+    public function show($id = 0,Request $request,$json = false)
     {
     	$resultSet					= Cliente::find((int)$id);
+    	
+    	$tipoCliente				= $this->tipoCliente($request->url());
+    	
     	if($json )
     	{
     		return response()->json($resultSet);
@@ -259,7 +296,10 @@ class ClienteController extends BaseController
 	    	$dataNascimento				= $dataNascimento[2]."/".$dataNascimento[1]."/".$dataNascimento[0];
 	    	$resultSet->data_nascimento	= $dataNascimento;
 	    }
-    	return view('contents.indexAdminClientesCadastroContent',['search'=>$resultSet]);
+	    
+	    $urlVoltar						= preg_replace('/(\/show\/\d{0,})/', "", $request->url());
+	    
+	  	return view('contents.indexAdminClientesCadastroContent',['search'=>$resultSet,'tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar]);
     }
     
     public function getClientCpf($cpf)

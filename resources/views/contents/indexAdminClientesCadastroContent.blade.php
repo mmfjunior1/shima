@@ -13,11 +13,12 @@
 		</style>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h2 class="sub-header">Cadastro - Clientes</h2> 
+          <h2 class="sub-header">Cadastro - {{$descricao}}</h2> 
 
           <div class="table-responsive">
           	<form name="formCadclientes" id="formCadclientes" class="formCad">
           	<input type="hidden" name="_token" id="_token" value="<?php echo csrf_token() ?>">
+          	<input type="hidden" name="tipo" id="tipo" value="{{$tipoCadastro}}">
             <fieldset>
             <legend>Dados Básicos</legend>
             <table class="table">
@@ -106,7 +107,7 @@
             		<td><button type="button" id="btnCadCli" class="btn btn-primary btnCad" >Gravar</button></td>
             		<td><button type="button" id="btnDelCli" class="btn btn-danger btnCad">Excluir</button></td>
             		<td><button type="button" id="btnCancCli" class="btn btn-default btnCad">Cancelar</button></td>
-            		<td><a class="btn btn-default" href="/admin/clientes">Voltar</a></td>
+            		<td><a class="btn btn-default" href="{{$urlVoltar}}">Voltar</a></td>
             	</tr>
             </table>
             <input type="hidden" name="id" id="id" value="{{{@$search->id}}}"> 
