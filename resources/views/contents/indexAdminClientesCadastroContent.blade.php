@@ -26,8 +26,8 @@
                 <tr>
                   <td width="10%">Nome:</td>
                   <td><input type="text" name="nome" id="nome" size="45" value="{{{@$search->nome}}}"></td>
-                  <td><!-- Nascimento:--></td>
-                  <td colspan="5"><!-- <input type="text" name="data_nascimento" id="data_nascimento" value="{{{@$search->data_nascimento}}}">--></td>
+                  <td>{{$tituloCampo}}</td>
+                  <td colspan="5">{!!$campoCodProprietario!!}</td>
                 </tr>
                 <tr>
                   <td>RG:</td>

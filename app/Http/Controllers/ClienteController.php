@@ -117,9 +117,19 @@ class ClienteController extends BaseController
     {
     	$tipoCliente	= $this->tipoCliente($request->url());
     	
-    	$urlVoltar						= str_replace("/cadastro","",$request->url());
+    	$urlVoltar		= str_replace("/cadastro","",$request->url());
     	
-    	return view('contents.indexAdminClientesCadastroContent',array('tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar));
+    	$campoCodProprietario		= "";
+    	 
+    	$tituloCampo				= "";
+    	
+    	if($tipoCliente['tipo']== 'p' )
+    	{
+    		$tituloCampo			= "Código Proprietário";
+    		$campoCodProprietario 	= '<input type="text" name="cod_proprietario" id="cod_proprietario" value="">';
+    	}
+    	
+    	return view('contents.indexAdminClientesCadastroContent',array('tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar,'tituloCampo'=>$tituloCampo,'campoCodProprietario'=>$campoCodProprietario));
     }
     
     function tipoCliente($str)
@@ -189,6 +199,14 @@ class ClienteController extends BaseController
     						'telefone1'				=>'max:20',
     						'telefone2'				=>'max:20',
     	);
+    	
+    	if($dados['tipo'] == 'p')
+    	{
+    		if((int)$dados['cod_proprietario'] == 0)
+    		{
+    			return response()->json(['msg'=>'<strong>O código do proprietário deve ser informado.</strong>','statusOperation'=>false,]);
+    		}
+    	}
     	if(isset($request->painelCliente))
     	{
     		$camposValidacao = array(
@@ -284,6 +302,10 @@ class ClienteController extends BaseController
     	
     	$tipoCliente				= $this->tipoCliente($request->url());
     	
+    	$campoCodProprietario		= "";
+    	
+    	$tituloCampo				= "";
+    	
     	if($json )
     	{
     		return response()->json($resultSet);
@@ -299,7 +321,13 @@ class ClienteController extends BaseController
 	    
 	    $urlVoltar						= preg_replace('/(\/show\/\d{0,})/', "", $request->url());
 	    
-	  	return view('contents.indexAdminClientesCadastroContent',['search'=>$resultSet,'tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar]);
+	    if($tipoCliente['tipo']== 'p' )
+	    {
+	    	$tituloCampo			= "Código Proprietário";
+	    	$campoCodProprietario 	= '<input type="text" name="cod_proprietario" id="cod_proprietario" value="'.$resultSet->cod_proprietario.'">';
+	    }
+	    
+	  	return view('contents.indexAdminClientesCadastroContent',['search'=>$resultSet,'tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar,'tituloCampo'=>$tituloCampo,'campoCodProprietario'=>$campoCodProprietario]);
     }
     
     public function getClientCpf($cpf)
