@@ -12,14 +12,14 @@
           {!!$viewDefinition['btnIncluir']!!}
           </form>
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="grid">
                 <tr>
-                  <td width="10%" align="left">#</td>
-                  <td width="60%">Cliente</td>
-                  <td>CPF</td>
-                  <td align="center">Cadastrado em</td>
+                  <td width="10%" align="left" id="id">#</td>
+                  <td width="60%" id="nome">Cliente</td>
+                  <td id="cpf">CPF</td>
+                  <td align="center" id="created-at">Cadastrado em</td>
                 </tr>
-              <tbody>
+              <tbody id="bodyGrid">
                 <?php foreach ($search as $value){ 
                 	$data		= $value->created_at;
                 	

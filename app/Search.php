@@ -10,7 +10,27 @@ class Search extends Model
 	protected $table = 'imoveis';
 	protected $fillable		= ['id_cliente','inquilino', 'tipo','valor_imovel','operacao','area','quartos','suites','banheiros','vagas','cep','logradouro','numero','bairro','localidade','uf','latitude','longitude','status','codigo_imobiliaria','codigo_ordenacao'];
 	
-	public function pegaDadosImoveis($request = null, $page = 8, $admin = false)
+	public function getStatusAttribute($value)
+	{
+		$valor		= $value =='0' || $value== null?'Inativo':'Ativo';
+		return $valor;
+	}
+	
+	public function getCreatedAtAttribute($value)
+	{
+		$valor	= \App\helpers\Helpers::dateFormat($value);
+		return $valor;
+	}
+	
+	public function getOperacaoAttribute($value)
+	{
+		$valor	= $value ==1?'Venda':'Locação';
+		return $valor;
+	}
+	
+	
+	
+	public function pegaDadosImoveis($request = null, $page = 1, $admin = false)
 	{
 		//$imoveis 		= Search::paginate(20);
 		$localidade			= urldecode($request->localidade);
@@ -62,20 +82,23 @@ class Search extends Model
 			$array['tipo']	= $tipoImovel;
 		}
 		
+		$camposSelect	= ['imoveis.id','imoveis.codigo_imobiliaria','imoveis.valor_imovel','imoveis.tipo','imoveis.operacao','imoveis.created_at','imoveis.status'];		
+		
 		if($admin == false)
 		{
+			$camposSelect	= "*";
 			$array['status']	= 't';
 			if(count($array) > 0)
 			{
 				
-				$imoveis	= Search::select('*')->join('tipo_imovel','imoveis.tipo','=','tipo_imovel.id_tipo')
+				$imoveis	= Search::select($camposSelect)->join('tipo_imovel','imoveis.tipo','=','tipo_imovel.id_tipo')
 				->where($array)
 				->orderBy('codigo_ordenacao')
 				->paginate($page)->appends($array);
 			}
 			else
 			{
-				$imoveis		= Search::select('*')->join('tipo_imovel','imoveis.tipo','=','tipo_imovel.id_tipo')->paginate($page)->appends($array);
+				$imoveis		= Search::select($camposSelect)->join('tipo_imovel','imoveis.tipo','=','tipo_imovel.id_tipo')->paginate($page)->appends($array);
 			}
 			$imovelCidade 		= DB::table('imoveis')->select(DB::raw('count(localidade) as conta, localidade'))->where('status','=','t')->groupBy('localidade')->get();
 			$imovelOperacao		= DB::table('imoveis')->select(DB::raw('count(operacao) as conta,operacao'))->where('status','=','t')->groupBy('operacao')->get();
@@ -117,7 +140,7 @@ class Search extends Model
 			}
 			if(count($array) > 0)
 			{
-				$imoveis 		= Search::select('imoveis.*')->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')
+				$imoveis 		= Search::select($camposSelect)->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')
 									->orWhere(function ($imoveis) use ($array){
 										foreach($array as $field=>$value)
 										{
@@ -130,7 +153,7 @@ class Search extends Model
 			}
 			else
 			{
-				$imoveis 		= Search::select('imoveis.*')->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')->
+				$imoveis 		= Search::select($camposSelect)->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')->
 				orderBy('codigo_ordenacao')
 				->paginate($page);
 			}

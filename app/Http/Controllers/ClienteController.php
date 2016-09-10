@@ -45,17 +45,17 @@ class ClienteController extends BaseController
     	}
     	if(count($array) > 0)
     	{
-    		$clientes 		= Cliente::select('clientes.*')
+    		$clientes 		= Cliente::select(['clientes.id','clientes.nome','clientes.cpf','clientes.created_at'])
     		->orWhere(function ($clientes) use ($array){
     			foreach($array as $field=>$value)
     			{
     				$clientes->orWhere($field,'ilike','%'.$value.'%');
     			}
-    		})->where('tipo','=',$tipo)->paginate(10)->appends(['dado'=>$dado]);
+    		})->where('tipo','=',$tipo)->paginate(1)->appends(['dado'=>$dado]);
     	}
     	else
     	{
-    		$clientes 		= Cliente::select('clientes.*')->where('tipo','=',$tipo)->paginate(10);
+    		$clientes 		= Cliente::select(['clientes.id','clientes.nome','clientes.cpf','clientes.created_at'])->where('tipo','=',$tipo)->paginate(1);
     	}
     	return ['search'=>$clientes,'dado'=>$dado,'tipo'=>$tipoCliente];
     }
@@ -79,6 +79,12 @@ class ClienteController extends BaseController
     	$viewDefinition['urlStore']		= str_replace("/search","",$request->url()).'/cadastro';
     	
     	$viewDefinition['btnIncluir']	= '<a href="'.$viewDefinition['urlStore'].'" class="btn btn-primary">Incluir</a>';
+    	if($request->ajax())
+    	{
+    		
+    		return \Response::json(['search'=>$clienteLista['search'],'dado'=>$clienteLista['dado'],'viewDefinition'=>$viewDefinition,"page"=>(array)$clienteLista['search']->links()]);
+    	}
+    	
     	
     	return view('contents.indexAdminClientesListaContent',['search'=>$clienteLista['search'],'dado'=>$clienteLista['dado'],'viewDefinition'=>$viewDefinition,]);
     }
@@ -126,7 +132,7 @@ class ClienteController extends BaseController
     	if($tipoCliente['tipo']== 'p' )
     	{
     		$tituloCampo			= "Código Proprietário";
-    		$campoCodProprietario 	= '<input type="text" name="cod_proprietario" id="cod_proprietario" value="">';
+    		$campoCodProprietario 	= '<input type="text" name="cod_proprietario" id="cod_proprietario" value="" readonly>';
     	}
     	
     	return view('contents.indexAdminClientesCadastroContent',array('tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar,'tituloCampo'=>$tituloCampo,'campoCodProprietario'=>$campoCodProprietario));
@@ -200,13 +206,13 @@ class ClienteController extends BaseController
     						'telefone2'				=>'max:20',
     	);
     	
-    	if($dados['tipo'] == 'p')
+    	/*if($dados['tipo'] == 'p')
     	{
     		if((int)$dados['cod_proprietario'] == 0)
     		{
     			return response()->json(['msg'=>'<strong>O código do proprietário deve ser informado.</strong>','statusOperation'=>false,]);
     		}
-    	}
+    	}*/
     	if(isset($request->painelCliente))
     	{
     		$camposValidacao = array(
@@ -242,8 +248,10 @@ class ClienteController extends BaseController
 	    		 
 	    		if($decode->statusOperation == true)
 	    		{
+	    			
 	    			$create	= Cliente::create($dados);
-	    			return response()->json(['msg'=>'<strong>Operação concluída</strong>','statusOperation'=>true,'id'=>$create->id]);
+	    			$dados['cod_proprietario'] = $create->id;
+	    			return response()->json(['msg'=>'<strong>Operação concluída</strong>','statusOperation'=>true,'id'=>$create->id,"dados"=>$dados]);
 	    		}
 	    		return response()->json(['msg'=>'<strong>Erro ao executar operação!</strong><br><div style="color:red;font-weight:bold">['.$e->getMessage().']','statusOperation'=>false,'id'=>0]);
 	    		
@@ -286,7 +294,8 @@ class ClienteController extends BaseController
     				
     				$email->sendEmail("Alerta de mudança de senha - Imobiliária Shima", $texto,array(),$dados['email'],$nome);
     			}
-    			return response()->json(['msg'=>'<strong>Operação concluída</strong>','statusOperation'=>true,'id'=>$request->id]);
+    			$dados['cod_proprietario'] = $request->id;
+    			return response()->json(['msg'=>'<strong>Operação concluída</strong>','statusOperation'=>true,'id'=>$request->id,"dados"=>$dados]);
     		}
     		return response()->json(['msg'=>'<strong>Nenhum registro foi atualizado. Tente novamente.</strong>','statusOperation'=>false,'id'=>$request->id]);
     	}
@@ -324,7 +333,7 @@ class ClienteController extends BaseController
 	    if($tipoCliente['tipo']== 'p' )
 	    {
 	    	$tituloCampo			= "Código Proprietário";
-	    	$campoCodProprietario 	= '<input type="text" name="cod_proprietario" id="cod_proprietario" value="'.$resultSet->cod_proprietario.'">';
+	    	$campoCodProprietario 	= '<input type="text"  id="cod_proprietario" value="'.$resultSet->id.'" readonly>';
 	    }
 	    
 	  	return view('contents.indexAdminClientesCadastroContent',['search'=>$resultSet,'tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar,'tituloCampo'=>$tituloCampo,'campoCodProprietario'=>$campoCodProprietario]);

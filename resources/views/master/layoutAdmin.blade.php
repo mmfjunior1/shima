@@ -148,10 +148,8 @@
 
 			    return true;
 			});
+			
 		});
-		
-
-					
-		</script>
+	</script>
   </body>
 </html>

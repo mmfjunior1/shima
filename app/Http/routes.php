@@ -67,7 +67,7 @@ Route::get('/imovel/{id}', 								'SearchController@viewImovel');
 //Rotas possíveis para cadastro de clientes
 Route::get('admin/clientes', 						['middleware'=>'administrator','uses'	=>'ClienteController@index']);
 
-Route::get('admin/proprietarios', 					['middleware'=>'administrator','uses'	=>'ClienteController@index']);
+Route::any('admin/proprietarios', 					['middleware'=>'administrator','uses'	=>'ClienteController@index']);
 
 Route::any('admin/clientes/search', 				['middleware'=>'administrator','uses'	=>'ClienteController@index']);
 

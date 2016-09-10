@@ -19,7 +19,7 @@
           </form>
           
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped" id="grid">
               <thead>
                 <tr>
                   <td width="5%" >#</td>
@@ -31,14 +31,13 @@
                   <td>Status</td>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="bodyGrid">
                 <?php 
                 foreach ($search as $value)
                 { 
                 	
-                	$data		= explode("-", $value->created_at);
-                	$data[2]	= substr($data[2],0,2);
-                	$data		= $data[2]."/".$data[1]."/".$data[0];
+                	
+                	$data		= $value->created_at;
                 	$operacao	= $value->operacao ==1?'Venda':'Locação';
                 	$tipoImovel	= "";
                 	$status		= $value->status =='0' || $value->status == null?'Inativo':'Ativo';

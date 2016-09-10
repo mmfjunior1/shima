@@ -1,4 +1,68 @@
 $(document).ready(function(){
+	
+	$(".pagination a,.pagination span").click(function(){
+		
+		var urlPart		= /\?page=[0-9]/;
+
+		var action	= $("form").attr("action");
+		
+		var page = String((urlPart.exec(action)));
+		
+		page	= this.innerHTML;
+		
+		action		= String(action.replace(urlPart,''));
+		
+		page	= page.replace("?",'');	
+						
+		var dado	= $("#dado").val();
+
+		action		= String(action);		
+		$('.pagination li').removeClass('active');
+		$(this).parent().addClass('active');
+		$.ajax({
+			url		: action,
+			method 	: 'POST',
+			data	: $("form").serialize()+'&page='+page,
+			async	:false,
+			dataType: 'json',
+			beforeSend: function(){
+				$("#divProcessando").show();
+			},
+		}).done(function(response){
+			
+			var grid	= '';
+			$.each(response.search.data,function(index,value){
+				grid +='<tr>';
+				
+				var td	= 1;
+				
+				$.each(value,function(campo,valor)
+				{
+					if(td == 1)
+					{
+						grid +='<td><a href="'+action.replace("/search",'/show/'+valor)+'">'+valor+'</a></td>';
+					}
+					else
+					{
+						grid +='<td>'+valor+'</td>';
+					}
+					td++;
+				});
+				grid +='</tr>';
+				$("#divProcessando").hide();
+				
+			});
+			
+			$("#bodyGrid").html(grid);
+		}).error(function(){
+			$(".modal-body").html('<strong style="color:red">Houve uma falha ao realizar a operação. Entre em contato com o administrador do sistema.</strong>');
+             $('#myModal').modal();
+			$("#divProcessando").hide();
+		});
+		
+		return false;
+	});
+	
 	$(".cep").blur(function()
 	{
 		$.ajax({
@@ -361,6 +425,7 @@ $(document).ready(function(){
 	});
 	
 	$(".btnCad").click(function(){
+		alert("A");
 		var botamForm 	= $(this);
 	    var formulario 	= botamForm.closest('form');
 	    var nomeForm	= formulario[0].name
@@ -419,7 +484,7 @@ $(document).ready(function(){
 				}
 				$.each(response,function(field,value)
 				{
-					if(field != 'statusOperation' && field !='id' && field !='redirect')
+					if(field != 'statusOperation' && field !='id' && field !='redirect' && field!='dados')
 					{
 						textoErro+=value+"<br>";
 					}
@@ -430,6 +495,12 @@ $(document).ready(function(){
 					$('#myModal').modal();
 				}
 				//$("#btnCancCli").click();
+				
+				$.each(response.dados,function(field,value)
+				{
+					$("#"+field).val(value);
+				});
+				
 				if(redirect !=0)
 				{
 					zerarCampos(nomeForm);
