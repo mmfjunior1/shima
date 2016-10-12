@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Cliente;
+use App\Search;
 use App\Documento;
 use App\Http\Controllers\CEPController;
 use Validator;
@@ -81,8 +82,9 @@ class ClienteController extends BaseController
     	$viewDefinition['btnIncluir']	= '<a href="'.$viewDefinition['urlStore'].'" class="btn btn-primary">Incluir</a>';
     	if($request->ajax())
     	{
+    		$pages	= $clienteLista['search']->links();
     		
-    		return \Response::json(['search'=>$clienteLista['search'],'dado'=>$clienteLista['dado'],'viewDefinition'=>$viewDefinition,"page"=>(array)$clienteLista['search']->links()]);
+    		return \Response::json(['search'=>$clienteLista['search'],'dado'=>$clienteLista['dado'],'viewDefinition'=>$viewDefinition,"page"=>"$pages"]);
     	}
     	
     	
@@ -336,7 +338,13 @@ class ClienteController extends BaseController
 	    	$campoCodProprietario 	= '<input type="text"  id="cod_proprietario" value="'.$resultSet->id.'" readonly>';
 	    }
 	    
-	  	return view('contents.indexAdminClientesCadastroContent',['search'=>$resultSet,'tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar,'tituloCampo'=>$tituloCampo,'campoCodProprietario'=>$campoCodProprietario]);
+	    $imoveis		= new Search();
+	    
+	    $dadosCliente	= (object) array("dado"=>"", "id_cliente"=>$id,"localidade"=>"","logradouro"=>"","bairro"=>"","uf"=>"","operacao"=>"","tipo"=>"","area"=>"","tipo_imovel"=>"","route"=>"","valor"=>"");
+	    
+	    $listaImoveis	= $imoveis->pegaDadosImoveis($dadosCliente,1,true);
+	    
+	  	return view('contents.indexAdminClientesCadastroContent',['search'=>$resultSet,"imoveis"=>$listaImoveis['search'], 'tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar,'tituloCampo'=>$tituloCampo,'campoCodProprietario'=>$campoCodProprietario]);
     }
     
     public function getClientCpf($cpf)

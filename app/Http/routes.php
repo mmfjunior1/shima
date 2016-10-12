@@ -148,7 +148,7 @@ Route::post('admin/aluguel/cancelar',				['middleware'=>'administrator','uses'	=
 
 //Fim - Rotas possíveis para alguel.
 //Rotas possíveis para cadastro de imoveis
-Route::get('admin/imoveis',							['middleware'=>'administrator','uses'	=>'SearchController@adminImoveisIndex']);
+Route::any('admin/imoveis',							['middleware'=>'administrator','uses'	=>'SearchController@adminImoveisIndex']);
 
 Route::any('admin/imoveis/search',					['middleware'=>'administrator','uses'	=>'SearchController@adminImoveisIndex']);
 

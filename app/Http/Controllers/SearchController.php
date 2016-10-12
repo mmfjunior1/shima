@@ -62,8 +62,8 @@ class SearchController extends BaseController
     	
     	if($request->ajax())
     	{
-    	
-    		return \Response::json(['search'=>$dadosImovel['search'],'dado'=>$dadosImovel['dado'],"page"=>(array)$dadosImovel['search']->links()]);
+    		$pages	= $dadosImovel['search']->links();
+    		return \Response::json(['search'=>$dadosImovel['search'],'dado'=>$dadosImovel['dado'],"page"=>"$pages"]);
     	}
     	
     	return view('contents.indexAdminImoveisListaContent',$dadosImovel);

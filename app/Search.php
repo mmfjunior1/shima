@@ -43,7 +43,9 @@ class Search extends Model
 		$tipo				= ucfirst(strtolower(trim($request->tipo_imovel)));
 		$route				= $request->route;
 		$valor				= (float)$request->valor;
+		$idCliente			= (int)$request->id_cliente;
 		$array				= array();
+		
 		if($valor > 0)
 		{
 			$array['valor_imovel']		= $valor;
@@ -54,7 +56,7 @@ class Search extends Model
 		}
 		if($localidade)
 		{
-			$array['localidade']		= $localidade;
+			$array['imoveis.localidade']		= $localidade;
 		}
 		if($area)
 		{
@@ -140,16 +142,46 @@ class Search extends Model
 			}
 			if(count($array) > 0)
 			{
-				$imoveis 		= Search::select($camposSelect)->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')
-									->orWhere(function ($imoveis) use ($array){
-										foreach($array as $field=>$value)
-										{
-											
-											$imoveis->orWhere($field,'ilike','%'.$value.'%');
-										}
-									})
-									->orderBy('codigo_ordenacao')
-									->paginate($page)->appends(['dado'=>$dado]);
+				echo $idCliente;die;
+				if($idCliente > 0)
+				{
+					$imoveis 		= Search::select($camposSelect)->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')
+					->where('id_cliente','=',$idCliente)->where(function ($imoveis) use ($array){
+						foreach($array as $field=>$value)
+						{
+							if($value > 0)
+							{
+								$imoveis->orWhere($field,'=',''.$value.'');
+							}
+							else
+							{
+								$imoveis->orWhere($field,'ilike','%'.$value.'%');
+							}
+						}
+					})
+					->orderBy('codigo_ordenacao')
+					->paginate($page)->appends(['dado'=>$dado]);
+				}
+				else
+				{
+					$imoveis 		= Search::select($camposSelect)->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')
+					->where(function ($imoveis) use ($array){
+						foreach($array as $field=>$value)
+						{
+							if($value > 0)
+							{
+								$imoveis->orWhere($field,'=',''.$value.'');
+							}
+							else
+							{
+								$imoveis->orWhere($field,'ilike','%'.$value.'%');
+							}
+						}
+					})
+					->orderBy('codigo_ordenacao')
+					->paginate($page)->appends(['dado'=>$dado]);
+				}
+				
 			}
 			else
 			{

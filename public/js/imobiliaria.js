@@ -1,28 +1,43 @@
 $(document).ready(function(){
-	
-	$(".pagination a,.pagination span").click(function(){
-		
+	function pesquisaGenerica(element)
+	{
 		var urlPart		= /\?page=[0-9]/;
 
-		var action	= $("form").attr("action");
+		var action	= $("#formListaRegistro").attr("action");
+		
+		var href	= element.href;
+		
+		if(href)
+		{
+		//	action	= href;
+		}
 		
 		var page = String((urlPart.exec(action)));
 		
-		page	= this.innerHTML;
+		page	= element.innerHTML;
 		
 		action		= String(action.replace(urlPart,''));
+		//alert(page)
+		page	= page.replace("?",'');
 		
-		page	= page.replace("?",'');	
-						
+		page 	= page.replace("page=",'');
+		
 		var dado	= $("#dado").val();
 
 		action		= String(action);		
+		
 		$('.pagination li').removeClass('active');
-		$(this).parent().addClass('active');
+		
+		$(element).parent().addClass('active');
+		
+		if(isNaN(page))
+		{
+			page = 1;
+		}
 		$.ajax({
 			url		: action,
 			method 	: 'POST',
-			data	: $("form").serialize()+'&page='+page,
+			data	: $("#formListaRegistro").serialize()+'&page='+page,
 			async	:false,
 			dataType: 'json',
 			beforeSend: function(){
@@ -31,6 +46,7 @@ $(document).ready(function(){
 		}).done(function(response){
 			
 			var grid	= '';
+			
 			$.each(response.search.data,function(index,value){
 				grid +='<tr>';
 				
@@ -49,10 +65,9 @@ $(document).ready(function(){
 					td++;
 				});
 				grid +='</tr>';
-				$("#divProcessando").hide();
-				
 			});
-			
+			$("#divProcessando").hide();
+			$(".linkPages").html(response.page)
 			$("#bodyGrid").html(grid);
 		}).error(function(){
 			$(".modal-body").html('<strong style="color:red">Houve uma falha ao realizar a operação. Entre em contato com o administrador do sistema.</strong>');
@@ -61,6 +76,15 @@ $(document).ready(function(){
 		});
 		
 		return false;
+	}
+	$(".btnbusca").click(function(){
+		pesquisaGenerica(this);
+		return false;
+	});
+	
+	//$(".pagination a,.pagination span").click(function(){
+	$(".linkPages").delegate('a','click',function(){
+		return pesquisaGenerica(this);
 	});
 	
 	$(".cep").blur(function()
@@ -425,7 +449,6 @@ $(document).ready(function(){
 	});
 	
 	$(".btnCad").click(function(){
-		alert("A");
 		var botamForm 	= $(this);
 	    var formulario 	= botamForm.closest('form');
 	    var nomeForm	= formulario[0].name

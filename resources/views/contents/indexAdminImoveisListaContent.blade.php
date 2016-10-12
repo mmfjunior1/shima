@@ -9,12 +9,12 @@
 			}
 		</style>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <form action="/admin/imoveis/search" method="post" id="formListaRegistro">
           <h2 class="sub-header">Imóveis &nbsp;
-          <form action="/admin/imoveis/search" method="post">
           <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
           </h2>
           <input type="text" placeholder="Pesquise por cpf, CEP, bairro, rua, cidade ou estado" name="dado" id="dado" size="40" value="{{{$dado}}}">
-          <button class="btn btn-primary" type="submit">Pesquisar</button>
+          <button class="btn btn-primary btnbusca" type="button">Pesquisar</button>
           <a href="/admin/imoveis/cadastro" class="btn btn-primary">Incluir</a> 
           </form>
           
@@ -92,7 +92,7 @@
             </table>
             
           </div>
-          <div class="row">
+          <div class="row linkPages">
 			{!! $search->links() !!}
 			</div>
         </div>
