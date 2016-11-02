@@ -40,7 +40,5 @@
               <p><a role="button" href="#" class="btn btn-default">View details »</a></p>
             </div><!--/.col-xs-6.col-lg-4-->
           </div><!--/row-->
-        </div>
-      </div>
-    </div>
+        
 @endsection

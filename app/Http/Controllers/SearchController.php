@@ -27,7 +27,7 @@ class SearchController extends BaseController
     {
     	$dadosImovel	= new Search();
     	
-    	$results		= $dadosImovel->pegaDadosImoveis($request);
+    	$results		= $dadosImovel->pegaDadosImoveis($request,10);
     	
     	if($results['count'] == 0)
     	{
@@ -58,7 +58,7 @@ class SearchController extends BaseController
     {
     	$dadosImovel	= new Search();
     	
-    	$dadosImovel	= $dadosImovel->pegaDadosImoveis($request,1,true);
+    	$dadosImovel	= $dadosImovel->pegaDadosImoveis($request,10,true);
     	
     	if($request->ajax())
     	{
@@ -92,11 +92,15 @@ class SearchController extends BaseController
     	return view('contents.indexAdminImoveisCadastroContent',['tiposImovel'=>$tiposImovel,'search'=>$dados[0]]);
     }
     
-	public function create()
+	public function create( Request $request )
     {
 		$tiposImovel	= TipoImovel::all();
 		
-		return view('contents.indexAdminImoveisCadastroContent',['tiposImovel'=>$tiposImovel]);
+		if($request->modal)
+		{
+			return view('modal.indexAdminImoveisCadastroContent',['tiposImovel'=>$tiposImovel,'id_pessoa'=>$request->id_pessoa]);
+		}
+		return view('contents.indexAdminImoveisCadastroContent',['tiposImovel'=>$tiposImovel,'id_pessoa'=>null]);
     }
     
     function getClienteImovel( Request $request)
@@ -104,10 +108,12 @@ class SearchController extends BaseController
     	$clienteController	= new ClienteController();
     	
     	$cep				= new CEPController();
+
+    	$id					= (int)$request->id_cliente;
     	
-    	$dadosCliente		= $clienteController->getClientCpf($request->cpf);
     	
-    	return $clienteController->getClientCpf($request->cpf);
+    	
+    	return $clienteController->getClientCpf($request->cpf,$id);
     }
     function getEnderecoMaps( Request $request)
     {
@@ -276,6 +282,7 @@ class SearchController extends BaseController
     	$resultSet						= $dadosImovel::find((int)$request->id);
     	
     	$dados							= $request->all();
+    	
     	if(!strstr($dados['codigo_imobiliaria'], "-"))
     	{
     		return response()->json(['msg'=>'<strong>O formato do código do imóvel está incorreto. Acrescente o hífen no código para continuar com a operação.</strong>','statusOperation'=>false,'id'=>0]);
@@ -301,6 +308,7 @@ class SearchController extends BaseController
     	unset($dados['id_cliente_inquilino']);
     	unset($dados['cpf_inquilino']);
     	unset($dados['nome_inquilino']);
+    	unset($dados['idcliente']);
     	if(count($resultSet) == 0)
     	{
     		try

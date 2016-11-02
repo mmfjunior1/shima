@@ -83,9 +83,9 @@ Route::post('admin/clientesuser/gravar',			['middleware'=>'auth','uses'			=>'Cli
 
 Route::post('admin/clientes/cancelar',				['middleware'=>'administrator','uses'	=>'ClienteController@cancelar']);
 
-Route::get('admin/clientes/show/{id}',				['middleware'=>'administrator','uses'	=>'ClienteController@show']);
+Route::any('admin/clientes/show/{id}',				['middleware'=>'administrator','uses'	=>'ClienteController@show']);
 
-Route::get('admin/proprietarios/show/{id}',			['middleware'=>'administrator','uses'	=>'ClienteController@show']);
+Route::any('admin/proprietarios/show/{id}',			['middleware'=>'administrator','uses'	=>'ClienteController@show']);
 
 Route::post('admin/clientes/excluir',				['middleware'=>'administrator','uses'	=>'ClienteController@delete']);
 

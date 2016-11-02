@@ -1,9 +1,25 @@
 $(document).ready(function(){
-	function pesquisaGenerica(element)
+	
+	function incluirImovel()
 	{
+		var id_cliente = $("#id").val();
+		
+		$("#myModal1 .modal-body").html("<iframe src='http://127.0.0.1:6386/admin/imoveis/cadastro?modal=1&id_pessoa="+id_cliente+"' width='100%' height='800px'></iframe>");
+		$("#myModal1 .modal-dialog").attr("style","width:100%");
+		$("#myModal1 modal").attr("style","height:100%");
+		$('#myModal1').modal();
+	}
+	function pesquisaGenerica(element,dados)
+	{
+		try{
 		var urlPart		= /\?page=[0-9]/;
 
-		var action	= $("#formListaRegistro").attr("action");
+		var action	= $("form").attr("action");
+		
+		if(!action)
+		{
+			action = window.location.href;
+		}
 		
 		var href	= element.href;
 		
@@ -37,7 +53,7 @@ $(document).ready(function(){
 		$.ajax({
 			url		: action,
 			method 	: 'POST',
-			data	: $("#formListaRegistro").serialize()+'&page='+page,
+			data	: $("form").serialize()+'&page='+page+'&dado='+dados,
 			async	:false,
 			dataType: 'json',
 			beforeSend: function(){
@@ -76,15 +92,24 @@ $(document).ready(function(){
 		});
 		
 		return false;
+		}catch(err){
+			alert(err);
+			return false;
+		}
 	}
 	$(".btnbusca").click(function(){
-		pesquisaGenerica(this);
+		pesquisaGenerica(this,$("#dado").val());
+		return false;
+	});
+	
+	$(".btnbusca1").click(function(){
+		incluirImovel();
 		return false;
 	});
 	
 	//$(".pagination a,.pagination span").click(function(){
 	$(".linkPages").delegate('a','click',function(){
-		return pesquisaGenerica(this);
+		return pesquisaGenerica(this,$("#dado").val());
 	});
 	
 	$(".cep").blur(function()
@@ -117,52 +142,7 @@ $(document).ready(function(){
 	
 	$(".cpfSearch").blur(function()
 	{
-		var obj 		= this;
-		
-		var inquilino	= obj.name.split("_");
-		
-		inquilino		= inquilino[1]!=undefined?'_'+inquilino[1]:'';
-		
-		var valor = this.value;
-		
-		if(valor == '')
-		{
-			$("#id_cliente,#nome").val('');
-			return false;
-		}
-		$.ajax({
-			url		: '/admin/imoveis/cliente',
-			method 	: 'POST',
-			data	: 'cpf='+valor+'&_token='+$("#_token").val(),
-			beforeSend: function(){
-				$("#divProcessando").show();
-			},
-		}).done(function(response){
-			$("#divProcessando").hide();
-			var textoErro = '';
-			if(response.cpf == undefined)
-			{
-				$(".modal-body").html("Nenhum cliente foi encontrado.");
-				$('#myModal').modal();
-				$("#cpf,#nome").val('');
-				return false;
-			}
-			if(response !='')
-			{
-				$.each(response,function(field,value)
-				{
-					console.log(field+inquilino+"="+value)
-					$("#"+field+inquilino).val(value);
-				});
-				
-			}
-			
-		}).error(function(){
-                $(".modal-body").html('<strong style="color:red">Houve uma falha ao pesquisar o CEP. Tente novamente.</strong>');
-                $("#myModal").modal();
-                $("#divProcessando").hide();
-        });
-
+		return buscaCliente(this);
 	});
 	$(".btnCadParcela").click(function(){
 		var formulario	= new FormData();
@@ -590,4 +570,63 @@ function alimentaCamposAjax(response)
 	{
 		$("#"+field).val(value);
 	});
+}
+
+function buscaCliente(object)
+{
+	var valor = '';
+	var inquilino = '';
+	if(object)
+	{
+		var obj 		= object;
+		
+		inquilino	= obj.name.split("_");
+		
+		inquilino		= inquilino[1]!=undefined?'_'+inquilino[1]:'';
+		
+		valor = obj.value;
+		
+		if(valor == '')
+		{
+			$("#id_cliente,#nome").val('');
+			return false;
+		}
+	}
+	
+	if(valor == '' && $("#idcliente").val() == '')
+	{
+		return false;
+	}
+	$.ajax({
+		url		: '/admin/imoveis/cliente',
+		method 	: 'POST',
+		data	: 'cpf='+valor+'&_token='+$("#_token").val()+'&id_cliente='+$("#idcliente").val(),
+		beforeSend: function(){
+			$("#divProcessando").show();
+		},
+	}).done(function(response){
+		$("#divProcessando").hide();
+		var textoErro = '';
+		if(response.cpf == undefined)
+		{
+			$(".modal-body").html("Nenhum cliente foi encontrado.");
+			$('#myModal').modal();
+			$("#cpf,#nome").val('');
+			return false;
+		}
+		if(response !='')
+		{
+			$.each(response,function(field,value)
+			{
+				console.log(field+inquilino+"="+value)
+				$("#"+field+inquilino).val(value);
+			});
+			
+		}
+		
+	}).error(function(){
+            $(".modal-body").html('<strong style="color:red">Houve uma falha ao pesquisar o CEP. Tente novamente.</strong>');
+            $("#myModal").modal();
+            $("#divProcessando").hide();
+    });
 }

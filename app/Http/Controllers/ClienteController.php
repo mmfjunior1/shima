@@ -52,11 +52,11 @@ class ClienteController extends BaseController
     			{
     				$clientes->orWhere($field,'ilike','%'.$value.'%');
     			}
-    		})->where('tipo','=',$tipo)->paginate(1)->appends(['dado'=>$dado]);
+    		})->where('tipo','=',$tipo)->paginate(10)->appends(['dado'=>$dado]);
     	}
     	else
     	{
-    		$clientes 		= Cliente::select(['clientes.id','clientes.nome','clientes.cpf','clientes.created_at'])->where('tipo','=',$tipo)->paginate(1);
+    		$clientes 		= Cliente::select(['clientes.id','clientes.nome','clientes.cpf','clientes.created_at'])->where('tipo','=',$tipo)->paginate(10);
     	}
     	return ['search'=>$clientes,'dado'=>$dado,'tipo'=>$tipoCliente];
     }
@@ -137,7 +137,7 @@ class ClienteController extends BaseController
     		$campoCodProprietario 	= '<input type="text" name="cod_proprietario" id="cod_proprietario" value="" readonly>';
     	}
     	
-    	return view('contents.indexAdminClientesCadastroContent',array('tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar,'tituloCampo'=>$tituloCampo,'campoCodProprietario'=>$campoCodProprietario));
+    	return view('contents.indexAdminClientesCadastroContent',array('tipoCadastro'=>$tipoCliente['tipo'],"imoveis"=>array(), 'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar,'tituloCampo'=>$tituloCampo,'campoCodProprietario'=>$campoCodProprietario));
     }
     
     function tipoCliente($str)
@@ -309,9 +309,30 @@ class ClienteController extends BaseController
     
     public function show($id = 0,Request $request,$json = false)
     {
-    	$resultSet					= Cliente::find((int)$id);
     	
-    	$tipoCliente				= $this->tipoCliente($request->url());
+    	$imoveis		= new Search();
+    	
+    	$tipoCliente		= $this->tipoCliente($request->url());
+    	
+    	if($tipoCliente['tipo'] == 'c')
+    	{
+    		$dadosCliente	= (object) array("dado"=>$request->dado,"inquilino"=>$id, "id_cliente"=>"","localidade"=>"","logradouro"=>"","bairro"=>"","uf"=>"","operacao"=>"","tipo"=>"","area"=>"","tipo_imovel"=>"","route"=>"","valor"=>"");
+    	}
+    	
+    	if( $tipoCliente['tipo'] != 'c')
+    	{
+    		$dadosCliente	= (object) array("dado"=>$request->dado,"inquilino"=>"", "id_cliente"=>$id,"localidade"=>"","logradouro"=>"","bairro"=>"","uf"=>"","operacao"=>"","tipo"=>"","area"=>"","tipo_imovel"=>"","route"=>"","valor"=>"");
+    	}
+    	
+    	$listaImoveis	= $imoveis->pegaDadosImoveis($dadosCliente,10,true);
+    	
+    	if($request->ajax())
+    	{
+    		$pages	= $listaImoveis['search']->links();
+    		
+    		return \Response::json(['search'=>$listaImoveis['search'],'dado'=>$listaImoveis['dado'],"page"=>"$pages"]);
+    	}
+    	$resultSet					= Cliente::find((int)$id);
     	
     	$campoCodProprietario		= "";
     	
@@ -338,24 +359,26 @@ class ClienteController extends BaseController
 	    	$campoCodProprietario 	= '<input type="text"  id="cod_proprietario" value="'.$resultSet->id.'" readonly>';
 	    }
 	    
-	    $imoveis		= new Search();
 	    
-	    $dadosCliente	= (object) array("dado"=>"", "id_cliente"=>$id,"localidade"=>"","logradouro"=>"","bairro"=>"","uf"=>"","operacao"=>"","tipo"=>"","area"=>"","tipo_imovel"=>"","route"=>"","valor"=>"");
-	    
-	    $listaImoveis	= $imoveis->pegaDadosImoveis($dadosCliente,1,true);
 	    
 	  	return view('contents.indexAdminClientesCadastroContent',['search'=>$resultSet,"imoveis"=>$listaImoveis['search'], 'tipoCadastro'=>$tipoCliente['tipo'],'descricao'=>$tipoCliente['descricao'],'urlVoltar'=>$urlVoltar,'tituloCampo'=>$tituloCampo,'campoCodProprietario'=>$campoCodProprietario]);
     }
     
-    public function getClientCpf($cpf)
+    public function getClientCpf($cpf,$id)
     {
     	$cpf1	= "";
     	if(!stristr($cpf, "."))
     	{
     		$cpf1 = substr($cpf,0,3).".".substr($cpf,3,3).".".substr($cpf,6,3)."-".substr($cpf,9,2);
     	}
-    	
-    	$resultSet					= Cliente::where(['cpf'=>$cpf1])->orWhere(['cpf'=>$cpf])->get();
+    	if($id > 0)
+    	{
+    		$resultSet					= Cliente::where(['id'=>$id])->get();
+    	}
+    	else
+    	{
+    		$resultSet					= Cliente::where(['cpf'=>$cpf1])->orWhere(['cpf'=>$cpf])->get();
+    	}
     	
     	if(count($resultSet) > 0)
     	{

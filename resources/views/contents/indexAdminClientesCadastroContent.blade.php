@@ -130,8 +130,8 @@
 		          <input type="hidden" name="_token" value="<?php echo csrf_token() ?>">
 		          
 		          <input type="text" placeholder="Pesquise por cpf, CEP, bairro, rua, cidade ou estado" name="dado" id="dado" size="40" >
-		          <button class="btn btn-primary" type="submit">Pesquisar</button>
-		          <a href="/admin/imoveis/cadastro" class="btn btn-primary">Incluir</a> 
+		          <button class="btn btn-primary btnbusca" type="button">Pesquisar</button>
+		          <a href="#" onclick="pesquisaGenerica()" class="btn btn-primary btnbusca1">Incluir</a> 
 		          <div class="table-responsive">
 		            <table class="table table-striped" id="grid">
 		              <thead>
@@ -207,7 +207,9 @@
 		            
 		          </div>
 		          <div class="row linkPages">
+		          	@if (count($imoveis) > 0)
 					{!! $imoveis->links() !!}
+					@endif
 					</div>
 		        </div>
 		  		

@@ -31,6 +31,9 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="/js/vendor/jquery.min.js"></script>
+    <script src="/js/vendor/jquery-ui.js"></script>
+    <script src="/js/imobiliaria.js"></script>
   </head>
 
   <body>
@@ -62,48 +65,10 @@
     </div>
   </div>
 </div>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Imob - Imobiliária Shima</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <!-- <li><a href="#">Minha conta</a></li>-->
-            <!--  <li><a href="#">Settings</a></li> -->
-            <!-- <li><a href="#">Profile</a></li>-->
-            <li><a href="/admin/sair">Sair</a></li>
-          </ul>
-         <!--  <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
-           -->
-        </div>
-      </div>
-    </nav>
     <div class="container-fluid">
 
 	  <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Menu <span class="sr-only">(current)</span></a></li>
-            <li><a href="/admin/proprietarios">Cadastro de proprietários</a></li>
-            <li><a href="/admin/clientes">Cadastro de inquilinos</a></li>
-            <li><a href="/admin/imoveis">Cadastro de imóveis</a></li>
-            <li><a href="/admin/aluguel">Gestão de alugueis</a></li>
-            <li><a href="/admin/docs">Gestão de documentos</a></li>
-            <li><a href="/admin/mensagem">Mensagens</a></li>
-            <li class="active"><a href="#">Segurança <span class="sr-only">(current)</span></a></li>
-            <li><a href="/admin/usuarios">Usuários do sistema</a></li>
-          </ul>
-          
-        </div>
+        
 	@yield('content')
     
 
@@ -118,7 +83,7 @@
     <script src="/js/vendor/holder.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/js/ie10-viewport-bug-workaround.js"></script>
-    <script src="/js/imobiliaria.js"></script>
+    
     <script>
     
     $(function() {

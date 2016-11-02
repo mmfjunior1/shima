@@ -44,6 +44,7 @@ class Search extends Model
 		$route				= $request->route;
 		$valor				= (float)$request->valor;
 		$idCliente			= (int)$request->id_cliente;
+		$idInquilino		= (int)$request->inquilino;
 		$array				= array();
 		
 		if($valor > 0)
@@ -116,8 +117,8 @@ class Search extends Model
 		if($admin == true)
 		{
 			$dado	= $request->dado;
-			if($dado)
-			{
+			//if($dado)
+			//{
 				$cpf	= $dado;
 				$cep	= $dado;
 				if(strlen($cpf) >=11)
@@ -139,31 +140,56 @@ class Search extends Model
 				$array['nome']		 			= $dado;
 				$array['codigo_imobiliaria']	= $dado;
 				
-			}
+			//}
+			
 			if(count($array) > 0)
 			{
-				echo $idCliente;die;
-				if($idCliente > 0)
+				if($idCliente > 0 || $idInquilino > 0)
 				{
-					$imoveis 		= Search::select($camposSelect)->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')
-					->where('id_cliente','=',$idCliente)->where(function ($imoveis) use ($array){
-						foreach($array as $field=>$value)
-						{
-							if($value > 0)
+					
+					if($idInquilino  > 0)
+					{
+						
+						$imoveis 		= Search::select($camposSelect)->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')
+						->where('inquilino','=',$idInquilino)->where(function ($imoveis) use ($array){
+							foreach($array as $field=>$value)
 							{
-								$imoveis->orWhere($field,'=',''.$value.'');
+								if($value > 0)
+								{
+									$imoveis->orWhere($field,'=',''.$value.'');
+								}
+								else
+								{
+									$imoveis->orWhere($field,'ilike','%'.$value.'%');
+								}
 							}
-							else
+						})
+						->orderBy('codigo_ordenacao')
+						->paginate($page)->appends(['dado'=>$dado]);
+					}
+					if($idCliente  > 0)
+					{
+						$imoveis 		= Search::select($camposSelect)->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')
+						->where('id_cliente','=',$idCliente)->where(function ($imoveis) use ($array){
+							foreach($array as $field=>$value)
 							{
-								$imoveis->orWhere($field,'ilike','%'.$value.'%');
+								if($value > 0)
+								{
+									$imoveis->orWhere($field,'=',''.$value.'');
+								}
+								else
+								{
+									$imoveis->orWhere($field,'ilike','%'.$value.'%');
+								}
 							}
-						}
-					})
-					->orderBy('codigo_ordenacao')
-					->paginate($page)->appends(['dado'=>$dado]);
+						})
+						->orderBy('codigo_ordenacao')
+						->paginate($page)->appends(['dado'=>$dado]);
+					}
 				}
 				else
 				{
+					
 					$imoveis 		= Search::select($camposSelect)->leftJoin('clientes','imoveis.id_cliente','=', 'clientes.id')
 					->where(function ($imoveis) use ($array){
 						foreach($array as $field=>$value)
